@@ -53,3 +53,9 @@ def home(request):
 
 def finances(request):
     return render(request, 'finances.html')
+
+def inventory(request):
+  return render(request, 'inventory.html')
+
+def staff(request):
+  return render(request, 'staff.html')
