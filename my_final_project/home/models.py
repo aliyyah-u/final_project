@@ -365,7 +365,7 @@ class Staff(models.Model):
 
 
 class Staffs(models.Model):
-    id = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(db_column='Name', max_length=20)  # Field name made lowercase.
     designation = models.CharField(db_column='Designation', max_length=20)  # Field name made lowercase.
     address = models.CharField(db_column='Address', max_length=30)  # Field name made lowercase.
@@ -377,7 +377,7 @@ class Staffs(models.Model):
 
 
 class Units(models.Model):
-    id = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
     unit = models.CharField(max_length=10)
     logs = models.CharField(max_length=30)
 
@@ -387,7 +387,7 @@ class Units(models.Model):
 
 
 class Users(models.Model):
-    id = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
