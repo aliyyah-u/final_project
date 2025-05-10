@@ -1,14 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Biswas Agro Home</title>
-</head>
-<body>
-    <h1>Welcome to Biswas Agro</h1>
+{% extends 'master.html' %}
+{% block 'body' %}
+
+
+<h1>Welcome to Biswas Agro Data Management System</h1>
+
+<!-- <h3>Agricultural Data Management System</h3>
+
+<p>Manage:</p>
+<ul>
+  <li>Inventory Management</li>
+  <li> <a href="{% url 'finances' %}">Financial Tracking</a></li>
+  <li>Staff Management</li>
+  <li>And more...</li>
+</ul>
+
+<ul>
+  <li>
     <a href="{% url 'finances' %}">Finances</a>
+  </li>
+  <li>
     <a href="{% url 'inventory' %}">Inventory</a>
+
+  </li>
+
+  <li>
     <a href="{% url 'staff' %}">Staff Information</a>
-    
-    <!-- Add  homepage content here -->
-</body>
-</html>
+  </li>
+
+</ul> -->
+
+<!-- </div> -->
+
+{% endblock %}

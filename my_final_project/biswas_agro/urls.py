@@ -6,5 +6,4 @@ urlpatterns = [
     path('finances/', views.finances, name='finances'), 
     path('inventory/', views.inventory, name='inventory'),
     path('staff/', views.staff, name='staff')
-
 ]

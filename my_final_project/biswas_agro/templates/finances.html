@@ -1,15 +1,19 @@
-<!-- <h1>Check finances</h1> -->
+{% extends 'master.html' %}
+{% block 'body' %}
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Financial Dashboard</title>
 </head>
+
 <body>
     <h1>Financial Overview</h1>
     <a href="{% url 'home' %}">Back to Home</a>
-    
-    <!-- Add your financial content here -->
-    <!-- You can use your Cost, Earning models here -->
+
+    <!-- Add financial content here -->
 </body>
+
 </html>
+{% endblock %}
