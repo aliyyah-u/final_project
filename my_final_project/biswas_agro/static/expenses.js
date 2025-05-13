@@ -1,19 +1,36 @@
-async function loadCostChart() {
+let myChart = null;
 
-    const response = await fetch('/api/cost/');
+async function filterCostChart() {
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+
+    let url = '/api/cost/';
+    const params = new URLSearchParams();
+
+    // Add the selected date range as parameters
+    if (startDate) params.append('start', startDate);
+    if (endDate) params.append('end', endDate);
+    if (params.toString()) url += `?${params.toString()}`;
+
+    const response = await fetch(url);
     const data = await response.json();
 
-    const sorted = data //most recent dates
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 10)
-        .reverse();
+    // Sort cost data by date, oldest first
+    const sorted = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+    drawChart(sorted);
+}
 
-    const labels = sorted.map(item => item.date);
-    const costData = sorted.map(item => item.cost);
+function drawChart(data) {
+    const labels = data.map(item => item.date);
+    const costData = data.map(item => item.cost);
 
     const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
