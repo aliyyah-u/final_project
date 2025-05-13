@@ -1,0 +1,38 @@
+function myFunction() {
+    alert("Hello from a static file!");
+}
+
+async function loadCostChart() {
+
+    const response = await fetch('/api/cost/');
+    const data = await response.json();
+
+    const sorted = data //most recent dates
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 10)
+        .reverse();
+
+    const labels = sorted.map(item => item.date);
+    const costData = sorted.map(item => item.cost);
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Cost',
+                data: costData,
+                backgroundColor: 'rgba(167, 189, 167, 0.6)'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
