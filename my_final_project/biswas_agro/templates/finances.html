@@ -1,19 +1,35 @@
 {% extends 'master.html' %}
+<title>{% block title %}Expenses{% endblock %}</title>
+
 {% block 'body' %}
+<a href="{% url 'home' %}">Back to Home</a>
 
-<!DOCTYPE html>
-<html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+<canvas id="chart" width="500" height="500"></canvas>
 
-<head>
-    <title>Financial Dashboard</title>
-</head>
+<script>
+    const myChart = new Chart("myChart", {
+    type: "bar",
+    data: {},
+    options: {}
+    });
+</script>
 
-<body>
-    <h1>Financial Overview</h1>
-    <a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}
+
+
+
+<!-- <!DOCTYPE html>
+<html> -->
+<!-- <head> -->
+    <!-- <title>Expenses Dashboard</title> -->
+<!-- </head> -->
+
+<!-- <body> -->
+    <!-- <h1>Expenses</h1> -->
+    <!-- <a href="{% url 'home' %}">Back to Home</a> -->
 
     <!-- Add financial content here -->
-</body>
+<!-- </body>
 
-</html>
-{% endblock %}
+</html> -->
