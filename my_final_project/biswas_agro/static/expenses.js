@@ -1,7 +1,3 @@
-function myFunction() {
-    alert("Hello from a static file!");
-}
-
 async function loadCostChart() {
 
     const response = await fetch('/api/cost/');
