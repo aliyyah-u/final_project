@@ -1,4 +1,9 @@
 let myChart = null;
+let selectedChartType = 'bar';
+
+function setChartType(type) {
+    selectedChartType = type;
+}
 
 async function filterCostChart() {
     const startDate = document.getElementById('start-date').value;
@@ -31,7 +36,7 @@ function drawChart(data) {
     }
 
     myChart = new Chart(ctx, {
-        type: 'bar',
+        type: selectedChartType,
         data: {
             labels: labels,
             datasets: [{
