@@ -5,13 +5,35 @@ function setChartType(type) {
     selectedChartType = type;
 }
 
+function getMonthDateRange(monthStr) {
+    if (!monthStr) return null;
+    const [year, month] = monthStr.split('-').map(Number); // convert str to num
+    const start = new Date(year, month - 1, 1); //month - 1 as js months start from 0. 1 = first day of month
+    const end = new Date(year, month, 0); // 0 = last day of month
+    return {
+        start: start.toISOString().slice(0, 10),  // YYYY-MM-DD format
+        end: end.toISOString().slice(0, 10)
+    };
+}
+
 async function filterProfitChart() {
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
+    const startMonth = document.getElementById('start-date').value;
+    const endMonth = document.getElementById('end-date').value;
 
     const params = new URLSearchParams();
-    if (startDate) params.append('start', startDate);
-    if (endDate) params.append('end', endDate);
+
+    if (startMonth) {
+        const range = getMonthDateRange(startMonth);
+        const startDate = range.start;
+        params.append('start', startDate);
+    }
+
+    if (endMonth) {
+        const range = getMonthDateRange(endMonth);
+        const endDate = range.end;
+        params.append('end', endDate);
+    }
+
 
     let costUrl = '/api/cost/';
     let earningUrl = '/api/earning/';
@@ -26,7 +48,6 @@ async function filterProfitChart() {
     const costData = await costResponse.json();
     const earningData = await earningResponse.json();
 
-    // Map cost and earnings by date
     const dateMap = {};
 
     costData.forEach(item => {
@@ -41,7 +62,6 @@ async function filterProfitChart() {
         dateMap[date].earnings += parseFloat(item.price) || 0;
     });
 
-    // Sort dates
     const dates = Object.keys(dateMap).sort((a, b) => new Date(a) - new Date(b));
     const chartData = dates.map(date => ({
         date,
