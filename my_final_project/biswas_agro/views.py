@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.template import loader
 from rest_framework import viewsets
-from .serializers import CostSerializer, FishbuySerializer
-from .models import Cost, Fishbuy
+from .serializers import CostSerializer, FishbuySerializer, EarningSerializer
+from .models import Cost, Fishbuy, Earning
 from django.utils.dateparse import parse_date
 
 def home(request):
@@ -46,3 +46,22 @@ class FishbuyViewSet(viewsets.ModelViewSet):
         if end:
             queryset = queryset.filter(date__lte=parse_date(end))
         return queryset
+    
+class EarningViewSet(viewsets.ModelViewSet):
+    queryset = Earning.objects.all()
+    serializer_class = EarningSerializer
+
+    def get_queryset(self):
+        queryset = Earning.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
+    
+def profit(request):
+    template = loader.get_template('profit.html')
+    return HttpResponse(template.render())

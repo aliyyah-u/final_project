@@ -5,8 +5,7 @@
 
 {% block body %}
 <div class="container">
-    <h2 class="mb-4">Costs</h2>
-    <!-- Date pickers and bar chart generator -->
+    <h2 class="mb-4">Profit</h2>
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <label for="start-date" class="form-label">Start Date</label>
@@ -27,11 +26,11 @@
             </ul>
         </div>
         <div class="col-md-4 d-flex align-items-end">
-            <button onclick="filterCostChart()" class="btn btn-secondary w-100">Generate Expense Chart</button>
+            <button onclick="filterProfitChart()" class="btn btn-secondary w-100">Generate Earning vs Cost Chart</button>
         </div>
     </div>
-    <canvas id="myChart"></canvas>
+    <canvas id="profitChart"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'expenses.js' %}"></script>
+<script src="{% static 'profit.js' %}"></script>
 {% endblock %}

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cost, Fishbuy
+from .models import Cost, Fishbuy, Earning
 
 class CostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,4 +17,13 @@ class FishbuySerializer(serializers.ModelSerializer):
             'id','date', 'fishname', 'buyfrom', 'buyamount',
             'fishquantity', 'price', 'status', 'fishto', 'vouchar',
             'comments', 'logs'
+        )
+        
+class EarningSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Earning
+        fields = (
+            'date', 'sector', 'item', 'source', 'quantity_per_unit',
+            'quantity', 'unit', 'price', 'status', 'memo',
+            'comment', 'logs'
         )
