@@ -4,4 +4,51 @@
 <h1>Welcome to Biswas Agro</h1>
 <h6>Data Management System</h6>
 
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="datetime p-3 rounded shadow mt-5">
+                <div class="time display-4 text-secondary fw-bold"></div>
+                <div class="date h4 text-white mt-2"></div>
+            </div>
+        </div>
+
+        <script>
+            const timeElement = document.querySelector(".time");
+            const dateElement = document.querySelector(".date");
+
+            function formatTime(date) {
+                const hours12 = date.getHours() % 12 || 12;
+                const minutes = date.getMinutes();
+                const isAm = date.getHours() < 12;
+                return `${hours12.toString().padStart(2, "0")}:${minutes
+                    .toString()
+                    .padStart(2, "0")} ${isAm ? "AM" : "PM"}`;
+            }
+
+            function formatDate(date) {
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                return `${DAYS[date.getDay()]}, ${MONTHS[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
+            }
+
+            setInterval(() => {
+                const now = new Date();
+                timeElement.textContent = formatTime(now);
+                dateElement.textContent = formatDate(now);
+            }, 200);
+        </script>
+
+        <div class="col-md-6">
+            <a class="weatherwidget-io" href="https://forecast7.com/en/51d51n0d13/london/" data-label_1="LONDON"
+                data-label_2="WEATHER" data-theme="weather_one">LONDON WEATHER</a>
+            <script>
+                !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+            </script>
+        </div>
+    </div>
+</div>
 {% endblock %}
