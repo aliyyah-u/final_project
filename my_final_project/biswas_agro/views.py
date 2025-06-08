@@ -116,6 +116,17 @@ class UsersinfoViewSet(viewsets.ModelViewSet):
 class LoanTransactionsViewSet(viewsets.ModelViewSet):
     queryset = LoanTransactions.objects.all()
     serializer_class = LoanTransactionsSerializer
+    
+    def get_queryset(self):
+        queryset = LoanTransactions.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
 
 class LoandetailsViewSet(viewsets.ModelViewSet):
     queryset = Loandetails.objects.all()

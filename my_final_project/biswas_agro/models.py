@@ -273,7 +273,7 @@ class LoanProvidersInfo(models.Model):
 
 
 class LoanTransactions(models.Model):
-    loanid = models.IntegerField()
+    loanid = models.IntegerField(primary_key=True)
     investerid = models.IntegerField()
     date = models.DateField()
     payment = models.IntegerField(db_column='Payment')  # Field name made lowercase.
