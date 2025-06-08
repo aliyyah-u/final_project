@@ -97,6 +97,17 @@ class InvestmentViewSet(viewsets.ModelViewSet):
     queryset = Investment.objects.all()
     serializer_class = InvestmentSerializer
     
+    def get_queryset(self):
+        queryset = Investment.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
+    
 class StaffViewSet(viewsets.ModelViewSet):
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
