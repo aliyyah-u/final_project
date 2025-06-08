@@ -8,12 +8,36 @@ router = routers.DefaultRouter()
 router.register(r'cost', CostViewSet)
 router.register(r'fishbuy', FishbuyViewSet) 
 router.register(r'earning', EarningViewSet) 
+router.register(r'investment', InvestmentViewSet)
+router.register(r'staff', StaffViewSet)
+router.register(r'staffs', StaffsViewSet)
+router.register(r'users', UsersViewSet)
+router.register(r'usersinfo', UsersinfoViewSet)
+router.register(r'loan-transactions', LoanTransactionsViewSet)
+router.register(r'loan-details', LoandetailsViewSet)
+router.register(r'loan-providers', LoanProvidersInfoViewSet)
+router.register(r'cost-items', CostitemsViewSet)
+router.register(r'cost-purpose', CostpurposeViewSet)
+router.register(r'dailyworks', DailyworksViewSet)
+router.register(r'fishtype', FishtypeViewSet)
+router.register(r'items', ItemsViewSet)
+router.register(r'land', LandViewSet)
+router.register(r'mousa', MousaViewSet)
+router.register(r'salary', SalaryViewSet)
+router.register(r'sectors', SectorsViewSet)
+router.register(r'sources', SourcesViewSet)
+router.register(r'units', UnitsViewSet)
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('expenses/', views.expenses, name='expenses'),
     path('my_yield/', views.my_yield, name='my_yield'),
     path('profit/', views.profit, name='profit'),
-    path('api/', include(router.urls)), # /api/cost/ & /api/fishbuy/ & /api/earning
+    path('api/', include(router.urls)), # /api/cost/ & /api/fishbuy/ & /api/earning etc.
     path('api-auth/', include('rest_framework.urls')),
+     path('loans/', views.loans, name='loans'),
+    path('investment/', views.investment, name='investment'),
+    path('land/', views.land, name='land'),
+    path('staff/', views.staff, name='staff'),
+    path('logs/', views.logs, name='logs'),
 ]
