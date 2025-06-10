@@ -159,6 +159,17 @@ class DailyworksViewSet(viewsets.ModelViewSet):
     queryset = Dailyworks.objects.all()
     serializer_class = DailyworksSerializer
     
+    def get_queryset(self):
+        queryset = Dailyworks.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
+    
 class FishtypeViewSet(viewsets.ModelViewSet):
     queryset = Fishtype.objects.all()
     serializer_class = FishtypeSerializer

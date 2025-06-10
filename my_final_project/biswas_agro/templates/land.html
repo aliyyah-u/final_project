@@ -1,9 +1,57 @@
 {% extends 'master.html' %}
 {% load static %}
 
-{% block title %}Land{% endblock %}
+{% block title %}Land Analysis{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h2 class="mb-4">Land</h2>
+    <h2 class="mb-4">Land Analysis</h2>
+    <div class="row g-3 mb-4">
+
+        <div class="dropdown col-md-4">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownXAxis"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                x-axis
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownXAxis">
+                <li><a class="dropdown-item" href="#" onclick="setXAxisType('id'); return false;">id</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setXAxisType('gher'); return false;">gher</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setXAxisType('mousa'); return false;">mousa</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setXAxisType('dag'); return false;">dag</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setXAxisType('khotian'); return false;">khotian</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown col-md-4">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownYAxis"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                y-axis
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownYAxis">
+                <li><a class="dropdown-item" href="#" onclick="setYAxisType('amount'); return false;">amount</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setYAxisType('plane_land'); return false;">plane_land</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setYAxisType('par_cannel'); return false;">par_cannel</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown col-md-4">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Chart type
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#" onclick="setChartType('bar'); return false;">Bar Chart</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setChartType('line'); return false;">Line Chart</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setChartType('scatter'); return false;">Scatter Plot</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button onclick="filterChart()" class="btn btn-secondary w-100">Display Chart</button>
+        </div>
+    </div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'land.js' %}"></script>
 {% endblock %}
