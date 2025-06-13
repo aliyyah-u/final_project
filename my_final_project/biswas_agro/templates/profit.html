@@ -6,27 +6,28 @@
 {% block body %}
 <div class="container">
     <h2 class="mb-4">Profit</h2>
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
             <label for="start-date" class="form-label">Start Month</label>
             <input type="month" id="start-date" class="form-control">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="end-date" class="form-label">End Month</label>
             <input type="month" id="end-date" class="form-control">
         </div>
-        <div class="dropdown col-md-4">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+
+        <div class="dropdown col-md-3 d-flex align-items-end">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="profitDropdown"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                Choose which chart to generate
+                <span id="dropdownLabel">Choose Chart</span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <ul class="dropdown-menu" aria-labelledby="profitDropdown">
                 <li><a class="dropdown-item" href="#" onclick="setChartType('bar'); return false;">Bar Chart</a></li>
                 <li><a class="dropdown-item" href="#" onclick="setChartType('line'); return false;">Line Chart</a></li>
             </ul>
         </div>
-        <div class="col-md-4 d-flex align-items-end">
-            <button onclick="filterProfitChart()" class="btn btn-secondary w-100">Generate Earning vs Cost Chart</button>
+        <div class="col-md-3 d-flex align-items-end">
+            <button onclick="filterProfitChart()" class="btn btn-dark w-100">Generate Earning vs Cost Chart</button>
         </div>
     </div>
     <canvas id="profitChart"></canvas>

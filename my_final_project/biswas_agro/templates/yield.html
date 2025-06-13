@@ -4,20 +4,22 @@
 {% block title %}Yield{% endblock %}
 
 {% block body %}
-<div class="d-flex flex-column">
-    <h3>All Fish Quantity per Year</h3>
-
-    <div class="mb-3">
-        <label for="year-select" class="form-label">Select Year</label>
-        <select id="year-select" class="form-select" style="max-height: 200px; overflow-y: auto;">
-            <option value="">All Years</option>
-        </select>
+<div class="container">
+    <h2>All Fish Quantity per Year</h2>
+    <div class="row g-6 mb-6">
+        <div class="col-md-6">
+            <label for="year-select" class="form-label">Select Year</label>
+            <select id="year-select" class="form-select" style="max-height: 200px; overflow-y: auto;">
+                <option value="">All Years</option>
+            </select>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <button id="generate-chart-button" class="btn btn-dark w-100">Generate Fish Buy Chart</button>
+        </div>
     </div>
-
-    <button id="generate-chart-button" class="btn btn-secondary">Generate Fish Buy Chart</button>
     <canvas id="fishChart"></canvas>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'my_yield.js' %}"></script>
-    {% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'my_yield.js' %}"></script>
+{% endblock %}

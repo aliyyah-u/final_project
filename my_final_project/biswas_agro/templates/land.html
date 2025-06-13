@@ -6,10 +6,10 @@
 {% block body %}
 <div class="container">
     <h2 class="mb-4">Land Analysis</h2>
-    <div class="row g-3 mb-4">
+    <div class="row g-3 mb-3">
 
-        <div class="dropdown col-md-4">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownXAxis"
+        <div class="dropdown col-md-3">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownXAxis"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 x-axis
             </button>
@@ -22,8 +22,8 @@
             </ul>
         </div>
 
-        <div class="dropdown col-md-4">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownYAxis"
+        <div class="dropdown col-md-3">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownYAxis"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 y-axis
             </button>
@@ -34,8 +34,8 @@
             </ul>
         </div>
 
-        <div class="dropdown col-md-4">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+        <div class="dropdown col-md-3">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Chart type
             </button>
@@ -45,8 +45,8 @@
                 <li><a class="dropdown-item" href="#" onclick="setChartType('scatter'); return false;">Scatter Plot</a></li>
             </ul>
         </div>
-        <div class="col-md-4 d-flex align-items-end">
-            <button onclick="filterChart()" class="btn btn-secondary w-100">Display Chart</button>
+        <div class="col-md-3 d-flex align-items-end">
+            <button onclick="filterChart()" class="btn btn-dark w-100">Display Chart</button>
         </div>
     </div>
     <canvas id="myChart"></canvas>
