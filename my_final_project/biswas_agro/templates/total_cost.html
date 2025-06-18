@@ -21,6 +21,15 @@
         <!-- <button onclick="filterCostChart()">Filter Cost Only</button>
         <button onclick="filterTotalCostChart()">Filter Total Cost</button> -->
 
+        <div class="col-md-3">
+            <label for="grouping" class="form-label">Group By</label>
+            <select id="grouping" class="form-select" onchange="filterCostChart()">
+                <option value="date">Date</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+
         <div class="col-md-3 d-flex align-items-end">
             <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
