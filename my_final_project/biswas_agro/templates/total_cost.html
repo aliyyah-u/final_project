@@ -1,27 +1,24 @@
 {% extends 'master.html' %}
 {% load static %}
 
-{% block title %}Expenses{% endblock %}
+{% block title %}Total Costs{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h2 class="mb-3">Expenses</h2>
+    <h2 class="mb-3">Total Costs</h2>
 
     <div class="row g-3 mb-3">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="start-date" class="form-label">Start Date</label>
             <input type="date" id="start-date" class="form-control">
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="end-date" class="form-label">End Date</label>
             <input type="date" id="end-date" class="form-control">
         </div>
 
-        <!-- <button onclick="filterCostChart()">Filter Cost Only</button>
-        <button onclick="filterTotalCostChart()">Filter Total Cost</button> -->
-
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="grouping" class="form-label">Group By</label>
             <select id="grouping" class="form-select" onchange="filterCostChart()">
                 <option value="date">Date</option>
@@ -30,7 +27,7 @@
             </select>
         </div>
 
-        <div class="col-md-3 d-flex align-items-end">
+        <div class="col-md-2 d-flex align-items-end">
             <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Chart Type
@@ -41,14 +38,11 @@
             </ul>
         </div>
 
-        <div class="col-md-3 d-flex align-items-end">
+        <div class="col-md-2 d-flex align-items-end">
             <button onclick="filterCostChart()" class="btn btn-dark w-100">Generate Expense Chart</button>
         </div>
-        <div class="col-md-6">
-            <a href="" class="btn btn-dark w-100">Generate PDF</a>
-        </div>
-        <div class="col-md-6">
-            <button class="btn btn-dark w-100">Generate CSV</button>
+        <div class="col-md-2 d-flex align-items-end">
+            <a href="" class="btn btn-secondary w-100">Generate PDF or CSV</a>
         </div>
     </div>
 </div>
