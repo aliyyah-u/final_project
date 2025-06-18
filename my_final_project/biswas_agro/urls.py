@@ -31,6 +31,7 @@ router.register(r'units', UnitsViewSet)
 urlpatterns = [
     path('', views.home, name='home'),
     path('expenses/', views.expenses, name='expenses'),
+    path('total_cost/', views.total_cost, name='total_cost'),
     path('my_yield/', views.my_yield, name='my_yield'),
     path('profit/', views.profit, name='profit'),
     path('api/', include(router.urls)), # /api/cost/ & /api/fishbuy/ & /api/earning etc.
@@ -40,4 +41,5 @@ urlpatterns = [
     path('land/', views.land, name='land'),
     path('staff/', views.staff, name='staff'),
     path('logs/', views.logs, name='logs'),
+    # path('expenses/pdf/', views.some_view, name='some_view'),
 ]

@@ -1,0 +1,51 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}Expenses{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2 class="mb-3">Expenses</h2>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
+            <label for="start-date" class="form-label">Start Date</label>
+            <input type="date" id="start-date" class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <label for="end-date" class="form-label">End Date</label>
+            <input type="date" id="end-date" class="form-control">
+        </div>
+
+        <!-- <button onclick="filterCostChart()">Filter Cost Only</button>
+        <button onclick="filterTotalCostChart()">Filter Total Cost</button> -->
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Chart Type
+            </button>
+            <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#" onclick="setChartType('bar'); return false;">Bar Chart</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setChartType('line'); return false;">Line Chart</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button onclick="filterCostChart()" class="btn btn-dark w-100">Generate Expense Chart</button>
+        </div>
+        <div class="col-md-6">
+            <a href="" class="btn btn-dark w-100">Generate PDF</a>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-dark w-100">Generate CSV</button>
+        </div>
+    </div>
+</div>
+
+<canvas id="myChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'total_cost.js' %}"></script>
+{% endblock %}

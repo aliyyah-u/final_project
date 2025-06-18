@@ -11,6 +11,26 @@ from .models import (
     Users, Usersinfo, Dailyworks, Fishtype, Items, Land, Mousa, Salary, Sectors, Sources, Units
 )
 from django.utils.dateparse import parse_date
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from django.db.models import Sum
+
+# def total_cost(request):
+#     total_cost_value = Cost.objects.aggregate(total=Sum('cost'))['total'] or 0
+#     total_fishbuy_value = Fishbuy.objects.aggregate(total=Sum('price'))['total'] or 0
+
+#     context = {
+#         'total_cost': total_cost_value,
+#         'total_fishbuy': total_fishbuy_value,
+#         'total_combined': total_cost_value + total_fishbuy_value,
+#     }
+
+#     template = loader.get_template('total_cost.html')
+#     return HttpResponse(template.render(context, request))
+
+def total_cost(request):
+    template = loader.get_template('total_cost.html')
+    return HttpResponse(template.render())
 
 def home(request):
     template = loader.get_template('home.html')
