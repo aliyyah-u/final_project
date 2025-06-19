@@ -94,6 +94,9 @@ class Cost(models.Model):
     class Meta:
         managed = False
         db_table = 'cost'
+        
+    def __str__(self):
+        return f"{self.date} {self.costcategory} {self.costitems} {self.buyamount} {self.unit} {self.cost} {self.status} {self.buyer} {self.buyvoucher} {self.comment} {self.logs} {self.costitems_id}"
 
 
 class Costitems(models.Model):
@@ -104,6 +107,9 @@ class Costitems(models.Model):
     class Meta:
         managed = False
         db_table = 'costitems'
+        
+    def __str__(self):
+        return f"{self.costitems}"
 
 
 class Costpurpose(models.Model):
@@ -112,6 +118,9 @@ class Costpurpose(models.Model):
     class Meta:
         managed = False
         db_table = 'costpurpose'
+        
+    def __str__(self):
+        return f"{self.costpurpose}"
 
 
 class Dailyworks(models.Model):
@@ -127,6 +136,9 @@ class Dailyworks(models.Model):
     class Meta:
         managed = False
         db_table = 'dailyworks'
+        
+    def __str__(self):
+        return f"{self.date} {self.worktype} {self.item} {self.amount} {self.unit} {self.personel} {self.comment} {self.logs}"
 
 
 class DjangoAdminLog(models.Model):
@@ -191,6 +203,9 @@ class Earning(models.Model):
     class Meta:
         managed = False
         db_table = 'earning'
+        
+    def __str__(self):
+        return f"{self.date} {self.sector} {self.item} {self.source} {self.quantity_per_unit} {self.quantity} {self.unit} {self.price} {self.status} {self.memo} {self.comment} {self.logs}"
 
 
 class Fishbuy(models.Model):
@@ -209,6 +224,9 @@ class Fishbuy(models.Model):
     class Meta:
         managed = False
         db_table = 'fishbuy'
+        
+    def __str__(self):
+        return f"{self.date} {self.fishname} {self.buyfrom} {self.buyamount} {self.fishquantity} {self.price} {self.status} {self.fishto} {self.vouchar} {self.comments} {self.logs}"
 
 
 class Fishtype(models.Model):
@@ -218,6 +236,9 @@ class Fishtype(models.Model):
     class Meta:
         managed = False
         db_table = 'fishtype'
+        
+    def __str__(self):
+        return f"{self.fishname} {self.logs}"
 
 
 class Investment(models.Model):
@@ -230,6 +251,9 @@ class Investment(models.Model):
     class Meta:
         managed = False
         db_table = 'investment'
+        
+    def __str__(self):
+        return f"{self.date} {self.name} {self.amount} {self.comments} {self.logs}"
 
 
 class Items(models.Model):
@@ -240,6 +264,9 @@ class Items(models.Model):
     class Meta:
         managed = False
         db_table = 'items'
+        
+    def __str__(self):
+        return f"{self.sector} {self.item_name} {self.logs}"
 
 
 class Land(models.Model):
@@ -257,6 +284,9 @@ class Land(models.Model):
     class Meta:
         managed = False
         db_table = 'land'
+    
+    def __str__(self):
+        return f"{self.gher} {self.mousa} {self.dag} {self.khotian} {self.amount} {self.plane_land} {self.par_cannel} {self.owners} {self.comment} {self.logs}"
 
 
 class LoanProvidersInfo(models.Model):
@@ -270,6 +300,9 @@ class LoanProvidersInfo(models.Model):
     class Meta:
         managed = False
         db_table = 'loan_providers_info'
+        
+    def __str__(self):
+        return f"{self.investerid} {self.name} {self.address} {self.mobile} {self.refference} {self.logs}"
 
 
 class LoanTransactions(models.Model):
@@ -282,6 +315,9 @@ class LoanTransactions(models.Model):
     class Meta:
         managed = False
         db_table = 'loan_transactions'
+        
+    def __str__(self):
+        return f"{self.loanid} {self.investerid} {self.date} {self.payment} {self.voucherno}"
 
 
 class Loandetails(models.Model):
@@ -295,6 +331,9 @@ class Loandetails(models.Model):
     class Meta:
         managed = False
         db_table = 'loandetails'
+    
+    def __str__(self):
+        return f"{self.loanid} {self.investerid} {self.amount} {self.interestpermonth} {self.conditions} {self.logs}"
 
 
 class Mousa(models.Model):
@@ -311,6 +350,9 @@ class Mousa(models.Model):
     class Meta:
         managed = False
         db_table = 'mousa'
+        
+    def __str__(self):
+        return f"{self.mousa} {self.dag} {self.owner} {self.date} {self.amount} {self.term} {self.vc_numnber} {self.status} {self.log}"
 
 
 class Salary(models.Model):
@@ -329,6 +371,9 @@ class Salary(models.Model):
     class Meta:
         managed = False
         db_table = 'salary'
+        
+    def __str__(self):
+        return f"{self.date} {self.purpose} {self.reason} {self.quantity} {self.rate} {self.total} {self.personel} {self.voucher} {self.status} {self.comment} {self.logs}"
 
 
 class Sectors(models.Model):
@@ -338,6 +383,9 @@ class Sectors(models.Model):
     class Meta:
         managed = False
         db_table = 'sectors'
+        
+    def __str__(self):
+        return f"{self.sector} {self.logs}"
 
 
 class Sources(models.Model):
@@ -347,6 +395,9 @@ class Sources(models.Model):
     class Meta:
         managed = False
         db_table = 'sources'
+        
+    def __str__(self):
+        return f"{self.source} {self.logs}"
 
 
 class Staff(models.Model):
@@ -362,6 +413,9 @@ class Staff(models.Model):
     class Meta:
         managed = False
         db_table = 'staff'
+        
+    def __str__(self):
+        return f"{self.staffno} {self.name} {self.post} {self.salary} {self.address} {self.mobile} {self.reference} {self.log}"
 
 
 class Staffs(models.Model):
@@ -374,6 +428,9 @@ class Staffs(models.Model):
     class Meta:
         managed = False
         db_table = 'staffs'
+    
+    def __str__(self):
+        return f"{self.id} {self.name} {self.designation} {self.address} {self.mobile}"
 
 
 class Units(models.Model):
@@ -384,6 +441,9 @@ class Units(models.Model):
     class Meta:
         managed = False
         db_table = 'units'
+        
+    def __str__(self):
+        return f"{self.id} {self.unit} {self.logs}"
 
 
 class Users(models.Model):
@@ -396,6 +456,9 @@ class Users(models.Model):
     class Meta:
         managed = False
         db_table = 'users'
+        
+    def __str__(self):
+        return f"{self.id} {self.username} {self.email} {self.password} {self.trn_date}"
 
 
 class Usersinfo(models.Model):
@@ -409,3 +472,6 @@ class Usersinfo(models.Model):
     class Meta:
         managed = False
         db_table = 'usersinfo'
+        
+    def __str__(self):
+        return f"{self.name} {self.username} {self.password} {self.role} {self.email} {self.mobile}"
