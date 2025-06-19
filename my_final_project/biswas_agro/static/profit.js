@@ -106,12 +106,12 @@ function drawProfitChart(data) {
             labels,
             datasets: [
                 {
-                    label: 'Total Cost',
+                    label: 'Total Cost ৳',
                     data: totalCostData,
                     backgroundColor: 'rgba(220, 53, 69, 0.6)'
                 },
                 {
-                    label: 'Earnings',
+                    label: 'Earnings ৳',
                     data: earningsData,
                     backgroundColor: 'rgba(167, 189, 167, 0.6)'
                 }

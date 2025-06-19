@@ -82,7 +82,7 @@ function drawChart(data) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Total Cost',
+                    label: 'Total Cost ৳',
                     data: totalCostData,
                     backgroundColor: 'rgba(167, 189, 167, 0.6)',
                 }
