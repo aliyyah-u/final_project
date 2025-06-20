@@ -7,15 +7,23 @@
 <div class="container">
     <h2 class="mb-4">Loans</h2>
     <div class="row g-3 mb-3">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="start-date" class="form-label">Start Date</label>
             <input type="date" id="start-date" class="form-control">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="end-date" class="form-label">End Date</label>
             <input type="date" id="end-date" class="form-control">
         </div>
-        <div class="dropdown col-md-3 d-flex align-items-end">
+        <div class="col-md-2">
+            <label for="grouping" class="form-label">Group By</label>
+            <select id="grouping" class="form-select" onchange="filterLoanChart()">
+                <option value="date">Date</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+        <div class="dropdown col-md-2 d-flex align-items-end">
             <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Choose chart
@@ -25,8 +33,11 @@
                 <li><a class="dropdown-item" href="#" onclick="setChartType('line'); return false;">Line Chart</a></li>
             </ul>
         </div>
-        <div class="col-md-3 d-flex align-items-end">
+        <div class="col-md-4 d-flex align-items-end">
             <button onclick="filterLoanChart()" class="btn btn-dark w-100">Display Chart</button>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <a href="" class="btn btn-secondary w-100">Generate PDF or CSV</a>
         </div>
     </div>
     <canvas id="loanChart"></canvas>

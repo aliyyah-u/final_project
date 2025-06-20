@@ -28,66 +28,17 @@ from django.utils.dateparse import parse_date
 #     template = loader.get_template('total_cost.html')
 #     return HttpResponse(template.render(context, request))
 
-def total_cost(request):
-    template = loader.get_template('total_cost.html')
-    return HttpResponse(template.render())
-
 def home(request):
     template = loader.get_template('home.html')
     return HttpResponse(template.render())
 
-def expenses(request):
-    template = loader.get_template('expenses.html')
+def total_cost(request):
+    template = loader.get_template('total_cost.html')
     return HttpResponse(template.render())
-
-class CostViewSet(viewsets.ModelViewSet):
-    queryset = Cost.objects.all()
-    serializer_class = CostSerializer
-
-    def get_queryset(self):
-        queryset = Cost.objects.all()
-        start = self.request.query_params.get('start')
-        end = self.request.query_params.get('end')
-
-        if start:
-            queryset = queryset.filter(date__gte=parse_date(start))
-        if end:
-            queryset = queryset.filter(date__lte=parse_date(end))
-        return queryset
     
 def my_yield(request):
     template = loader.get_template('yield.html')
     return HttpResponse(template.render())
-
-class FishbuyViewSet(viewsets.ModelViewSet):
-    queryset = Fishbuy.objects.all()
-    serializer_class = FishbuySerializer
-
-    def get_queryset(self):
-        queryset = Fishbuy.objects.all()
-        start = self.request.query_params.get('start')
-        end = self.request.query_params.get('end')
-
-        if start:
-            queryset = queryset.filter(date__gte=parse_date(start))
-        if end:
-            queryset = queryset.filter(date__lte=parse_date(end))
-        return queryset
-    
-class EarningViewSet(viewsets.ModelViewSet):
-    queryset = Earning.objects.all()
-    serializer_class = EarningSerializer
-
-    def get_queryset(self):
-        queryset = Earning.objects.all()
-        start = self.request.query_params.get('start')
-        end = self.request.query_params.get('end')
-
-        if start:
-            queryset = queryset.filter(date__gte=parse_date(start))
-        if end:
-            queryset = queryset.filter(date__lte=parse_date(end))
-        return queryset
     
 def profit(request):
     template = loader.get_template('profit.html')
@@ -113,12 +64,12 @@ def logs(request):
     template = loader.get_template('logs.html')
     return HttpResponse(template.render())
 
-class InvestmentViewSet(viewsets.ModelViewSet):
-    queryset = Investment.objects.all()
-    serializer_class = InvestmentSerializer
-    
+class CostViewSet(viewsets.ModelViewSet):
+    queryset = Cost.objects.all()
+    serializer_class = CostSerializer
+
     def get_queryset(self):
-        queryset = Investment.objects.all()
+        queryset = Cost.objects.all()
         start = self.request.query_params.get('start')
         end = self.request.query_params.get('end')
 
@@ -128,21 +79,50 @@ class InvestmentViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(date__lte=parse_date(end))
         return queryset
     
-class StaffViewSet(viewsets.ModelViewSet):
-    queryset = Staff.objects.all()
-    serializer_class = StaffSerializer
+class FishbuyViewSet(viewsets.ModelViewSet):
+    queryset = Fishbuy.objects.all()
+    serializer_class = FishbuySerializer
+
+    def get_queryset(self):
+        queryset = Fishbuy.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
     
-class StaffsViewSet(viewsets.ModelViewSet):
-    queryset = Staffs.objects.all()
-    serializer_class = StaffsSerializer
+class SalaryViewSet(viewsets.ModelViewSet):
+    queryset = Salary.objects.all()
+    serializer_class = SalarySerializer
     
-class UsersViewSet(viewsets.ModelViewSet):
-    queryset = Users.objects.all()
-    serializer_class = UsersSerializer
+    def get_queryset(self):
+        queryset = Salary.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
     
-class UsersinfoViewSet(viewsets.ModelViewSet):
-    queryset = Usersinfo.objects.all()
-    serializer_class = UsersinfoSerializer
+class EarningViewSet(viewsets.ModelViewSet):
+    queryset = Earning.objects.all()
+    serializer_class = EarningSerializer
+
+    def get_queryset(self):
+        queryset = Earning.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
     
 class LoanTransactionsViewSet(viewsets.ModelViewSet):
     queryset = LoanTransactions.objects.all()
@@ -158,22 +138,6 @@ class LoanTransactionsViewSet(viewsets.ModelViewSet):
         if end:
             queryset = queryset.filter(date__lte=parse_date(end))
         return queryset
-
-class LoandetailsViewSet(viewsets.ModelViewSet):
-    queryset = Loandetails.objects.all()
-    serializer_class = LoandetailsSerializer
-
-class LoanProvidersInfoViewSet(viewsets.ModelViewSet):
-    queryset = LoanProvidersInfo.objects.all()
-    serializer_class = LoanProvidersInfoSerializer
-    
-class CostitemsViewSet(viewsets.ModelViewSet):
-    queryset = Costitems.objects.all()
-    serializer_class = CostitemsSerializer
-
-class CostpurposeViewSet(viewsets.ModelViewSet):
-    queryset = Costpurpose.objects.all()
-    serializer_class = CostpurposeSerializer
     
 class DailyworksViewSet(viewsets.ModelViewSet):
     queryset = Dailyworks.objects.all()
@@ -190,6 +154,33 @@ class DailyworksViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(date__lte=parse_date(end))
         return queryset
     
+class InvestmentViewSet(viewsets.ModelViewSet):
+    queryset = Investment.objects.all()
+    serializer_class = InvestmentSerializer
+    
+    def get_queryset(self):
+        queryset = Investment.objects.all()
+        start = self.request.query_params.get('start')
+        end = self.request.query_params.get('end')
+
+        if start:
+            queryset = queryset.filter(date__gte=parse_date(start))
+        if end:
+            queryset = queryset.filter(date__lte=parse_date(end))
+        return queryset
+
+class SectorsViewSet(viewsets.ModelViewSet):
+    queryset = Sectors.objects.all()
+    serializer_class = SectorsSerializer
+    
+class SourcesViewSet(viewsets.ModelViewSet):
+    queryset = Sources.objects.all()
+    serializer_class = SourcesSerializer
+
+class UnitsViewSet(viewsets.ModelViewSet):
+    queryset = Units.objects.all()
+    serializer_class = UnitsSerializer
+
 class FishtypeViewSet(viewsets.ModelViewSet):
     queryset = Fishtype.objects.all()
     serializer_class = FishtypeSerializer
@@ -205,19 +196,35 @@ class LandViewSet(viewsets.ModelViewSet):
 class MousaViewSet(viewsets.ModelViewSet):
     queryset = Mousa.objects.all()
     serializer_class = MousaSerializer
-
-class SalaryViewSet(viewsets.ModelViewSet):
-    queryset = Salary.objects.all()
-    serializer_class = SalarySerializer
-
-class SectorsViewSet(viewsets.ModelViewSet):
-    queryset = Sectors.objects.all()
-    serializer_class = SectorsSerializer
     
-class SourcesViewSet(viewsets.ModelViewSet):
-    queryset = Sources.objects.all()
-    serializer_class = SourcesSerializer
+class LoandetailsViewSet(viewsets.ModelViewSet):
+    queryset = Loandetails.objects.all()
+    serializer_class = LoandetailsSerializer
 
-class UnitsViewSet(viewsets.ModelViewSet):
-    queryset = Units.objects.all()
-    serializer_class = UnitsSerializer
+class LoanProvidersInfoViewSet(viewsets.ModelViewSet):
+    queryset = LoanProvidersInfo.objects.all()
+    serializer_class = LoanProvidersInfoSerializer
+    
+class CostitemsViewSet(viewsets.ModelViewSet):
+    queryset = Costitems.objects.all()
+    serializer_class = CostitemsSerializer
+
+class CostpurposeViewSet(viewsets.ModelViewSet):
+    queryset = Costpurpose.objects.all()
+    serializer_class = CostpurposeSerializer
+    
+class StaffViewSet(viewsets.ModelViewSet):
+    queryset = Staff.objects.all()
+    serializer_class = StaffSerializer
+    
+class StaffsViewSet(viewsets.ModelViewSet):
+    queryset = Staffs.objects.all()
+    serializer_class = StaffsSerializer
+    
+class UsersViewSet(viewsets.ModelViewSet):
+    queryset = Users.objects.all()
+    serializer_class = UsersSerializer
+    
+class UsersinfoViewSet(viewsets.ModelViewSet):
+    queryset = Usersinfo.objects.all()
+    serializer_class = UsersinfoSerializer

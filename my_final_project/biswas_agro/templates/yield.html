@@ -7,14 +7,25 @@
 <div class="container">
     <h2>All Fish Quantity per Year</h2>
     <div class="row g-6 mb-6">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="year-select" class="form-label">Select Year</label>
             <select id="year-select" class="form-select" style="max-height: 200px; overflow-y: auto;">
                 <option value="">All Years</option>
             </select>
         </div>
-        <div class="col-md-6 d-flex align-items-end">
+        <div class="col-md-2">
+            <label for="grouping" class="form-label">Group By</label>
+            <select id="grouping" class="form-select" onchange="loadFishBuyChart()">
+                <option value="date">Date</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
             <button id="generate-chart-button" class="btn btn-dark w-100">Generate Fish Buy Chart</button>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <a href="" class="btn btn-secondary w-100">Generate PDF or CSV</a>
         </div>
     </div>
     <canvas id="fishChart"></canvas>

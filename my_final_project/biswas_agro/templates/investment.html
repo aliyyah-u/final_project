@@ -15,6 +15,14 @@
             <label for="end-date" class="form-label">End Date</label>
             <input type="date" id="end-date" class="form-control">
         </div>
+        <div class="col-md-2">
+            <label for="grouping" class="form-label">Group By</label>
+            <select id="grouping" class="form-select" onchange="filterChart()">
+                <option value="date">Date</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
         <div class="col-md-3 d-flex align-items-end">
             <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -27,6 +35,9 @@
         </div>
         <div class="col-md-3 d-flex align-items-end">
             <button onclick="filterChart()" class="btn btn-dark w-100">Display Chart</button>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <a href="" class="btn btn-secondary w-100">Generate PDF or CSV</a>
         </div>
     </div>
     <canvas id="myChart"></canvas>

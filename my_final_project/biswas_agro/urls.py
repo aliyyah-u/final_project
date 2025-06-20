@@ -30,7 +30,6 @@ router.register(r'units', UnitsViewSet)
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('expenses/', views.expenses, name='expenses'),
     path('total_cost/', views.total_cost, name='total_cost'),
     path('my_yield/', views.my_yield, name='my_yield'),
     path('profit/', views.profit, name='profit'),
