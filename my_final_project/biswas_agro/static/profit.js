@@ -5,66 +5,41 @@ function setChartType(type) {
     selectedChartType = type;
 }
 
-function getMonthDateRange(monthStr) {
-    if (!monthStr) return null;
-    const [year, month] = monthStr.split('-').map(Number);
-    const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month, 0);
-    return {
-        start: start.toISOString().slice(0, 10),  // YYYY-MM-DD format
-        end: end.toISOString().slice(0, 10)
-    };
-}
-
-function mergeByDate(costData, fishbuyData, salaryData, earningData) {
-    const groupBy = document.getElementById('grouping').value;
-    const map = {};
-
-    function getKey(date) {
-    if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
-    if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
-    return date;                                          // Full date
-}
-
-    costData.forEach(item => {
-        const key = getKey(item.date);
-        map[key] = map[key] || { key, cost: 0, fishbuy: 0, salary: 0, earnings: 0 };
-        map[key].cost += parseFloat(item.cost || 0);
-    });
-
-    fishbuyData.forEach(item => {
-        const key = getKey(item.date);
-        map[key] = map[key] || { key, cost: 0, fishbuy: 0, salary: 0, earnings: 0 };
-        map[key].fishbuy += parseFloat(item.price || 0);
-    });
-
-    salaryData.forEach(item => {
-        const key = getKey(item.date);
-        map[key] = map[key] || { key, cost: 0, fishbuy: 0, salary: 0, earnings: 0 };
-        map[key].salary += parseFloat(item.total || 0);
-    });
-
-    earningData.forEach(item => {
-        const key = getKey(item.date);
-        map[key] = map[key] || { key, cost: 0, fishbuy: 0, salary: 0, earnings: 0 };
-        map[key].earnings += parseFloat(item.price || 0);
-    });
-
-    return Object.values(map).sort((a, b) => new Date(a.key) - new Date(b.key));
-}
-
 async function filterProfitChart() {
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
+    const startMonth = document.getElementById('start-date').value; // YYYY-MM
+    const endMonth = document.getElementById('end-date').value;
 
+    let startDate = null;
+    let endDate = null;
+
+    // Only calculate dates if values chosen
+    if (startMonth) {
+        startDate = startMonth + '-01'; // 1st day of month
+    }
+    if (endMonth) {
+        const dateParts = endMonth.split('-');
+        const year = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]);
+        const lastDay = new Date(year, month, 0); // last day of end month (next month 0th day)
+        endDate = lastDay.toISOString().slice(0, 10); // YYYY-MM-DD
+
+    }
+
+    let costUrl = '/api/cost/';
+    let fishbuyUrl = '/api/fishbuy/';
+    let salaryUrl = '/api/salary/';
+    let earningUrl = '/api/earning/';
+
+    // Add the selected date range as parameters
     const params = new URLSearchParams();
     if (startDate) params.append('start', startDate);
     if (endDate) params.append('end', endDate);
 
-    const costUrl = '/api/cost/' + (params.toString() ? `?${params.toString()}` : '');
-    const fishbuyUrl = '/api/fishbuy/' + (params.toString() ? `?${params.toString()}` : '');
-    const salaryUrl = '/api/salary/' + (params.toString() ? `?${params.toString()}` : '');
-    const earningUrl = '/api/earning/' + (params.toString() ? `?${params.toString()}` : '');
+    const query = params.toString() ? `?${params.toString()}` : '';
+    costUrl += query;
+    fishbuyUrl += query;
+    salaryUrl += query;
+    earningUrl += query;
 
     const [costRes, fishbuyRes, salaryRes, earningRes] = await Promise.all([
         fetch(costUrl),
@@ -80,16 +55,57 @@ async function filterProfitChart() {
         earningRes.json()
     ]);
 
-    const merged = mergeByDate(costData, fishbuyData, salaryData, earningData)
-    drawProfitChart(merged);
+    const collected = collectByDate(costData, fishbuyData, salaryData, earningData)
+    drawProfitChart(collected);
+}
+
+function collectByDate(costData, fishbuyData, salaryData, earningData) {
+    const map = {};
+    const groupBy = document.getElementById('grouping').value;
+
+    function getGroup(date) {
+        if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
+        if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
+        return date;                                         // Full date (default)
+    }
+
+    // Aggregate cost per group
+    costData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0, earnings: 0 }; // group = date/month/year key
+        map[group].cost += parseFloat(item.cost || 0);
+    });
+
+    // Aggregate fishbuy per group
+    fishbuyData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0, earnings: 0 };
+        map[group].fishbuy += parseFloat(item.price || 0);
+    });
+
+    // Aggregate salary per group
+    salaryData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0, earnings: 0 };
+        map[group].salary += parseFloat(item.total || 0);
+    });
+
+    // Aggregate earnings per group
+    earningData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0, earnings: 0 };
+        map[group].earnings += parseFloat(item.price || 0);
+    });
+
+    // Return as sorted array
+    return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
 function drawProfitChart(data) {
-    const labels = data.map(item => item.key);
-    const totalCostData = data.map(item =>
-        (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0)
-    );
-    const earningsData = data.map(item => item.earnings);
+    const labels = data.map(item => item.group);
+    const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));
+    const earningsData = data.map(item => item.earnings || 0);
+
     const costData = data.map(item => item.cost);
     const fishbuyData = data.map(item => item.fishbuy);
     const salaryData = data.map(item => item.salary);
