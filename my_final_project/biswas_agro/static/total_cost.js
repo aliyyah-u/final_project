@@ -72,6 +72,7 @@ function drawChart(data) {
     const costData = data.map(item => item.cost);
     const fishbuyData = data.map(item => item.fishbuy);
     const salaryData = data.map(item => item.salary);
+    const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));
 
     const ctx = document.getElementById('myChart');
 
@@ -85,24 +86,42 @@ function drawChart(data) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Item Cost',
-                    data: costData,
-                    backgroundColor: 'rgba(167, 189, 167, 0.6)'
-                },
-                {
-                    label: 'Fish Price',
-                    data: fishbuyData,
-                    backgroundColor: 'rgba(100, 149, 237, 0.6)'
-                },
-                {
-                    label: 'Salary',
-                    data: salaryData,
-                    backgroundColor: 'rgba(167, 189, 167, 0.6)'
+                    label: 'Total Cost ৳',
+                    data: totalCostData,
+                    backgroundColor: 'rgba(167, 189, 167, 0.6)',
                 }
             ]
         },
         options: {
             responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            const index = context.dataIndex;
+                            const item = data[index];
+
+                            const itemCost = (item.cost || 0);
+                            const fishCost = (item.fishbuy || 0);
+                            const salary = (item.salary || 0);
+                            const total = (
+                                (item.cost || 0) +
+                                (item.fishbuy || 0) +
+                                (item.salary || 0)
+                            );
+
+                            return [
+                                'Total Cost: ' + total,
+                                '',
+                                'Item Cost: ' + itemCost,
+                                'Fish Cost: ' + fishCost,
+                                'Salary: ' + salary
+                            ];
+
+                        }
+                    }
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true
