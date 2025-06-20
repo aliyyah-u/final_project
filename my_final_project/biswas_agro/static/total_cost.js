@@ -36,42 +36,46 @@ async function filterCostChart() {
 
     // collect and sort cost data by date, oldest first
     const collected = collectByDate(costData, fishbuyData, salaryData);
-    const sorted = collected.sort((a, b) => new Date(a.date) - new Date(b.date));
-    drawChart(sorted);
+    drawChart(collected);
+
 }
 
 function collectByDate(costData, fishbuyData, salaryData) {
     const map = {};
+    const groupBy = document.getElementById('grouping').value;
+
+    function getGroup(date) {
+        if (groupBy === 'month') return date.slice(0, 7);        // YYYY-MM
+        if (groupBy === 'year') return date.slice(0, 4);         // YYYY
+        return date;                                             // Full date (default)
+    }
 
     // Aggregate cost per date
     costData.forEach(item => {
-        const date = item.date;
-        map[date] = map[date] || { date, cost: 0, fishbuy: 0, salary: 0 };
-        map[date].cost += parseFloat(item.cost || 0);
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0 };
+        map[group].cost += parseFloat(item.cost || 0);
     });
 
     // Aggregate fishbuy price per date
     fishbuyData.forEach(item => {
-        const date = item.date;
-        map[date] = map[date] || { date, cost: 0, fishbuy: 0, salary: 0 };
-        map[date].fishbuy += parseFloat(item.price || 0);
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0 };
+        map[group].fishbuy += parseFloat(item.price || 0);
     });
 
     salaryData.forEach(item => {
-        const date = item.date;
-        map[date] = map[date] || { date, cost: 0, fishbuy: 0, salary: 0 };
-        map[date].salary += parseFloat(item.total || 0);
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0 };
+        map[group].salary += parseFloat(item.total || 0);
     });
 
     // Return as sorted array
-    return Object.values(map).sort((a, b) => new Date(a.date) - new Date(b.date));
+    return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
 function drawChart(data) {
-    const labels = data.map(item => item.date);
-    const costData = data.map(item => item.cost);
-    const fishbuyData = data.map(item => item.fishbuy);
-    const salaryData = data.map(item => item.salary);
+    const labels = data.map(item => item.group);
     const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));
 
     const ctx = document.getElementById('myChart');
