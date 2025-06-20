@@ -106,10 +106,6 @@ function drawProfitChart(data) {
     const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));
     const earningsData = data.map(item => item.earnings || 0);
 
-    const costData = data.map(item => item.cost);
-    const fishbuyData = data.map(item => item.fishbuy);
-    const salaryData = data.map(item => item.salary);
-
     const ctx = document.getElementById('profitChart');
 
     if (profitChart) {
@@ -139,29 +135,37 @@ function drawProfitChart(data) {
                 tooltip: {
                     callbacks: {
                         label: function (context) {
-                            const idx = context.dataIndex;
-                            if (context.dataset.label === 'Total Cost') {
-                                return `Total Cost: ${totalCostData[idx].toFixed(2)}`;
-                            } else if (context.dataset.label === 'Earnings') {
-                                return `Earnings: ${earningsData[idx].toFixed(2)}`;
+                            const index = context.dataIndex;
+                            const item = data[index];
+
+                            const itemCost = item.cost || 0;
+                            const fishCost = item.fishbuy || 0;
+                            const salary = item.salary || 0;
+                            const totalCost = itemCost + fishCost + salary;
+                            const earnings = item.earnings || 0;
+                            const profit = earnings - totalCost;
+
+                            if (context.dataset.label == 'Total Cost ৳') {
+                                return [
+                                    'Total Cost: ' + totalCost,
+                                    'Cost Breakdown: ',
+                                    'Item Cost: ' + itemCost,
+                                    'Fish Cost: ' + fishCost,
+                                    'Salary: ' + salary,
+                                    '',
+                                    'Profit: ' + profit
+                                ];
                             }
+
+                            if (context.dataset.label == 'Earnings ৳') {
+                                return [
+                                    'Earnings: ' + earnings,
+                                    '',
+                                    'Profit: ' + profit
+                                ];
+                            }
+
                             return '';
-                        },
-                        afterBody: function (context) {
-                            const idx = context[0].dataIndex;
-                            const cost = costData[idx] || 0;
-                            const fishbuy = fishbuyData[idx] || 0;
-                            const salary = salaryData[idx] || 0;
-                            const earnings = earningsData[idx] || 0;
-                            const profit = earnings - (cost + fishbuy + salary);
-                            return [
-                                `Cost Breakdown:`,
-                                `- Item Cost: ${cost.toFixed(2)}`,
-                                `- Fish Cost: ${fishbuy.toFixed(2)}`,
-                                `- Salary: ${salary.toFixed(2)}`,
-                                ``,
-                                `Profit: ${profit.toFixed(2)}`
-                            ];
                         }
                     }
                 }
