@@ -40,5 +40,4 @@ urlpatterns = [
     path('land/', views.land, name='land'),
     path('staff/', views.staff, name='staff'),
     path('logs/', views.logs, name='logs'),
-    # path('expenses/pdf/', views.some_view, name='some_view'),
 ]
