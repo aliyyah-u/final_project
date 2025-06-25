@@ -107,3 +107,23 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('generate-chart-button').addEventListener('click', () => {
     loadFishBuyChart(); // Load and generate the chart when the button is clicked
 });
+
+function downloadChartAsPDF() { 
+    const canvas = document.getElementById('fishChart');
+    const imgData = canvas.toDataURL('image/png');
+
+    const pdf = new jspdf.jsPDF('portrait');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgProps = pdf.getImageProperties(imgData); // original image (pixels)
+    const pdfWidth = pageWidth * 0.9;     // Scale image width
+
+    // Calculate ratio for fitted pdfHeight from: (new height) / (new width) = (original height) / (original width)
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    // // Default top-left position (10, 10)
+    const x = 10;
+    const y = 10;
+
+    pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
+    pdf.save('fish_yield_chart.pdf');
+}

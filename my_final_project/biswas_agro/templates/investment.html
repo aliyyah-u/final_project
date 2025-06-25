@@ -37,11 +37,13 @@
             <button onclick="filterChart()" class="btn btn-dark w-100">Display Chart</button>
         </div>
         <div class="col-md-2 d-flex align-items-end">
-            <a href="" class="btn btn-secondary w-100">Generate PDF or CSV</a>
+            <button onclick="downloadChartAsPDF()" class="btn btn-secondary w-100">Download Chart as PDF</button>
         </div>
     </div>
     <canvas id="myChart"></canvas>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'investment.js' %}"></script>
 {% endblock %}
