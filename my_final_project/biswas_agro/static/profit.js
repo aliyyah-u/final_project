@@ -178,3 +178,23 @@ function drawProfitChart(data) {
         }
     });
 }
+
+function downloadChartAsPDF() { 
+    const canvas = document.getElementById('profitChart');
+    const imgData = canvas.toDataURL('image/png');
+
+    const pdf = new jspdf.jsPDF('portrait');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgProps = pdf.getImageProperties(imgData); // original image (pixels)
+    const pdfWidth = pageWidth * 0.9;     // Scale image width
+
+    // Calculate ratio for fitted pdfHeight from: (new height) / (new width) = (original height) / (original width)
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    // // Default top-left position (10, 10)
+    const x = 10;
+    const y = 10;
+
+    pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
+    pdf.save('profit_chart.pdf');
+}
