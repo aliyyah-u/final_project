@@ -13,16 +13,8 @@
                 <option value="">All Years</option>
             </select>
         </div>
-        <div class="col-md-2">
-            <label for="grouping" class="form-label">Group By</label>
-            <select id="grouping" class="form-select" onchange="loadFishBuyChart()">
-                <option value="date">Date</option>
-                <option value="month">Month</option>
-                <option value="year">Year</option>
-            </select>
-        </div>
         <div class="col-md-4 d-flex align-items-end">
-            <button id="generate-chart-button" class="btn btn-dark w-100">Generate Fish Buy Chart</button>
+            <button id="generate-chart-button" class="btn btn-secondary w-100">Generate Chart</button>
         </div>
         <div class="col-md-4 d-flex align-items-end">
             <button onclick="downloadChartAsPDF()" class="btn btn-secondary w-100">Download Chart as PDF</button>

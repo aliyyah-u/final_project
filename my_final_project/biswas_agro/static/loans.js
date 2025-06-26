@@ -18,16 +18,36 @@ async function filterLoanChart() {
     if (params.toString()) url += `?${params.toString()}`;
 
     const response = await fetch(url);
-    const data = await response.json();
+    const loanData = await response.json();
 
-    // Sort cost data by date, oldest first
-    const sorted = data.sort((a, b) => new Date(a.date) - new Date(b.date));
-    drawChart(sorted);
+    const collected = collectByDate(loanData);
+    drawLoanChart(collected);
 }
 
-function drawChart(data) {
-    const labels = data.map(item => item.date);
-    const loanData = data.map(item => item.payment);
+function collectByDate(loanData) {
+    const map = {};
+    const groupBy = document.getElementById('grouping').value;
+
+    function getGroup(date) {
+        if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
+        if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
+        return date;                                         // Full date (default)
+    }
+
+    // Aggregate loan per group
+    loanData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, loan: 0 }; // group = date/month/year key
+        map[group].loan += parseFloat(item.payment || 0);
+    });
+
+    // Return as sorted array
+    return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
+}
+
+function drawLoanChart(data) {
+    const labels = data.map(item => item.group);
+    const loanData = data.map(item => item.loan || 0);
 
     const ctx = document.getElementById('loanChart');
 

@@ -18,16 +18,36 @@ async function filterChart() {
     if (params.toString()) url += `?${params.toString()}`;
 
     const response = await fetch(url);
-    const data = await response.json();
+    const logData = await response.json();
 
-    // Sort cost data by date, oldest first
-    const sorted = data.sort((a, b) => new Date(a.date) - new Date(b.date));
-    drawChart(sorted);
+    const collected = collectByDate(logData);
+    drawChart(collected);
+}
+
+function collectByDate(logData) {
+    const map = {};
+    const groupBy = document.getElementById('grouping').value;
+
+    function getGroup(date) {
+        if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
+        if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
+        return date;                                         // Full date (default)
+    }
+
+    // Aggregate logs per group
+    logData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, log: 0 }; // group = date/month/year key
+        map[group].log += parseFloat(item.amount || 0);
+    });
+
+    // Return as sorted array
+    return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
 function drawChart(data) {
-    const labels = data.map(item => item.date);
-    const myData = data.map(item => item.amount);
+    const labels = data.map(item => item.group);
+    const myData = data.map(item => item.log);
 
     const ctx = document.getElementById('myChart');
 

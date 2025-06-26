@@ -18,16 +18,36 @@ async function filterChart() {
     if (params.toString()) url += `?${params.toString()}`;
 
     const response = await fetch(url);
-    const data = await response.json();
+    const investmentData = await response.json();
 
-    // Sort cost data by date, oldest first
-    const sorted = data.sort((a, b) => new Date(a.date) - new Date(b.date));
-    drawChart(sorted);
+    const collected = collectByDate(investmentData);
+    drawChart(collected);
+}
+
+function collectByDate(investmentData) {
+    const map = {};
+    const groupBy = document.getElementById('grouping').value;
+
+    function getGroup(date) {
+        if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
+        if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
+        return date;                                         // Full date (default)
+    }
+
+    // Aggregate investment per group
+    investmentData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, investment: 0 }; // group = date/month/year key
+        map[group].investment += parseFloat(item.amount || 0);
+    });
+
+    // Return as sorted array
+    return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
 function drawChart(data) {
-    const labels = data.map(item => item.date);
-    const myData = data.map(item => item.amount);
+    const labels = data.map(item => item.group);
+    const investmentData = data.map(item => item.investment);
 
     const ctx = document.getElementById('myChart');
 
@@ -41,7 +61,7 @@ function drawChart(data) {
             labels: labels,
             datasets: [{
                 label: 'Investment amount',
-                data: myData,
+                data: investmentData,
                 backgroundColor: 'rgba(167, 189, 167, 0.6)'
             }]
         },
