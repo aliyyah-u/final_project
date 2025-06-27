@@ -112,8 +112,10 @@ function drawProfitChart(data) {
         profitChart.destroy();
     }
 
+    const isHorizontalBar = selectedChartType === 'horizontalBar';
+
     profitChart = new Chart(ctx, {
-        type: selectedChartType === 'area' ? 'line' : selectedChartType,
+        type: isHorizontalBar ? 'bar' : (selectedChartType === 'area' ? 'line' : selectedChartType),
         data: {
             labels,
             datasets: [
@@ -134,6 +136,7 @@ function drawProfitChart(data) {
             ]
         },
         options: {
+            indexAxis: isHorizontalBar ? 'y' : 'x',
             responsive: true,
             plugins: {
                 tooltip: {

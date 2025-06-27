@@ -55,12 +55,14 @@ function drawLoanChart(data) {
         loanChart.destroy();
     }
 
+    const isHorizontalBar = selectedChartType === 'horizontalBar';
+
     loanChart = new Chart(ctx, {
-        type: selectedChartType === 'area' ? 'line' : selectedChartType,
+        type: isHorizontalBar ? 'bar' : (selectedChartType === 'area' ? 'line' : selectedChartType),
         data: {
             labels: labels,
             datasets: [{
-                label: 'Loan payment',
+                label: 'Loan payment ৳',
                 data: loanData,
                 backgroundColor: 'rgba(167, 189, 167, 0.6)',
                 borderColor: 'rgba(167, 189, 167, 0.6)',
@@ -68,6 +70,7 @@ function drawLoanChart(data) {
             }]
         },
         options: {
+            indexAxis: isHorizontalBar ? 'y' : 'x',
             scales: {
                 y: {
                     beginAtZero: true

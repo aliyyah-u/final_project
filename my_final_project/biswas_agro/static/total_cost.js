@@ -84,8 +84,10 @@ function drawChart(data) {
         myChart.destroy();
     }
 
+    const isHorizontalBar = selectedChartType === 'horizontalBar';
+
     myChart = new Chart(ctx, {
-        type: selectedChartType === 'area' ? 'line' : selectedChartType,
+        type: isHorizontalBar ? 'bar' : (selectedChartType === 'area' ? 'line' : selectedChartType),
         data: {
             labels: labels,
             datasets: [
@@ -100,6 +102,7 @@ function drawChart(data) {
             ]
         },
         options: {
+            indexAxis: isHorizontalBar ? 'y' : 'x',
             responsive: true,
             plugins: {
                 tooltip: {
