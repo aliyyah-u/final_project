@@ -20,7 +20,10 @@ class DailyworksAdmin(admin.ModelAdmin):
     list_display = ("date", "worktype", "item", "amount", "unit", "personel", "comment", "logs")
 
 class FishbuyAdmin(admin.ModelAdmin):
-    list_display = ("date", "fishname", "buyfrom", "buyamount", "fishquantity", "price", "status", "fishto", "vouchar", "comments", "logs")
+    list_display = (
+        "date", "fishname", "buyfrom", "buyamount", "fishquantity", "price", "status", "fishto",
+        "vouchar", "comments", "logs"
+        )
 
 class FishtypeAdmin(admin.ModelAdmin):
     list_display = ("fishname", "logs")
@@ -50,7 +53,9 @@ class MousaAdmin(admin.ModelAdmin):
     list_display = ("mousa", "dag", "owner", "date", "amount", "term", "vc_numnber", "status", "log")
 
 class SalaryAdmin(admin.ModelAdmin):
-    list_display = ("date", "purpose", "reason", "quantity", "rate", "total", "personel", "voucher", "status", "comment", "logs")
+    list_display = (
+        "date", "purpose", "reason", "quantity", "rate", "total", "personel", 
+        "voucher", "status", "comment", "logs")
 
 class SectorsAdmin(admin.ModelAdmin):
     list_display = ("sector", "logs")
@@ -68,7 +73,10 @@ class UsersinfoAdmin(admin.ModelAdmin):
     list_display = ("name", "username", "role", "email", "mobile")
 
 class EarningAdmin(admin.ModelAdmin):
-    list_display = ("date", "sector", "item", "source", "quantity_per_unit", "quantity", "unit", "price", "status", "memo", "comment", "logs")
+    list_display = (
+        "date", "sector", "item", "source", "quantity_per_unit", "quantity", "unit", "price",
+        "status", "memo", "comment", "logs"
+        )
 
 class ItemsAdmin(admin.ModelAdmin):
     list_display = ("sector", "item_name", "logs")
