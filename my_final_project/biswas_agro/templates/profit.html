@@ -26,15 +26,13 @@
             </select>
         </div>
 
-        <div class="dropdown col-md-2 d-flex align-items-end">
-            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="profitDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <span id="dropdownLabel">Chart Type</span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="profitDropdown">
-                <li><a class="dropdown-item" href="#" onclick="setChartType('bar'); return false;">Bar Chart</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setChartType('line'); return false;">Line Chart</a></li>
-            </ul>
+        <div class="col-md-2">
+            <label for="chart-type" class="form-label">Chart Type</label>
+            <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="area">Area Chart</option>
+            </select>
         </div>
 
         <div class="col-md-2 d-flex align-items-end">

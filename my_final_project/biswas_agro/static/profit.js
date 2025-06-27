@@ -113,19 +113,23 @@ function drawProfitChart(data) {
     }
 
     profitChart = new Chart(ctx, {
-        type: selectedChartType,
+        type: selectedChartType === 'area' ? 'line' : selectedChartType,
         data: {
             labels,
             datasets: [
                 {
                     label: 'Total Cost ৳',
                     data: totalCostData,
-                    backgroundColor: 'rgba(220, 53, 69, 0.6)'
+                    backgroundColor: 'rgba(220, 53, 69, 0.6)',
+                    borderColor: 'rgba(220, 53, 69, 0.6)',
+                    fill: selectedChartType === 'area',
                 },
                 {
                     label: 'Earnings ৳',
                     data: earningsData,
-                    backgroundColor: 'rgba(167, 189, 167, 0.6)'
+                    backgroundColor: 'rgba(167, 189, 167, 0.6)',
+                    borderColor: 'rgba(167, 189, 167, 0.6)',
+                    fill: selectedChartType === 'area',
                 }
             ]
         },

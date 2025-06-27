@@ -85,7 +85,7 @@ function drawChart(data) {
     }
 
     myChart = new Chart(ctx, {
-        type: selectedChartType,
+        type: selectedChartType === 'area' ? 'line' : selectedChartType,
         data: {
             labels: labels,
             datasets: [
@@ -93,6 +93,9 @@ function drawChart(data) {
                     label: 'Total Cost ৳',
                     data: totalCostData,
                     backgroundColor: 'rgba(167, 189, 167, 0.6)',
+                    borderColor: 'rgba(167, 189, 167, 0.6)',
+                    fill: selectedChartType === 'area',
+
                 }
             ]
         },

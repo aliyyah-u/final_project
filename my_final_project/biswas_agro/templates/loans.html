@@ -23,16 +23,16 @@
                 <option value="year">Year</option>
             </select>
         </div>
-        <div class="dropdown col-md-2 d-flex align-items-end">
-            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Choose chart
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#" onclick="setChartType('bar'); return false;">Bar Chart</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setChartType('line'); return false;">Line Chart</a></li>
-            </ul>
+
+        <div class="col-md-2">
+            <label for="chart-type" class="form-label">Chart Type</label>
+            <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="area">Area Chart</option>
+            </select>
         </div>
+
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="filterLoanChart()" class="btn btn-secondary w-100">Generate Chart</button>
         </div>

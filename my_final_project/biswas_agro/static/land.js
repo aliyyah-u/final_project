@@ -42,7 +42,8 @@ function drawChart(data) {
             datasets: [{
                 label: selectedYAxisType,
                 data: myData,
-                backgroundColor: 'rgba(167, 189, 167, 0.6)'
+                backgroundColor: 'rgba(167, 189, 167, 0.6)',
+                borderColor: 'rgba(167, 189, 167, 0.6)'
             }]
         },
         options: {
