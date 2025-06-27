@@ -8,46 +8,40 @@
     <h2 class="mb-4">Land Analysis</h2>
     <div class="row g-3 mb-3">
 
-        <div class="dropdown col-md-3">
-            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownXAxis"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                x-axis
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownXAxis">
-                <li><a class="dropdown-item" href="#" onclick="setXAxisType('id'); return false;">id</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setXAxisType('gher'); return false;">gher</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setXAxisType('mousa'); return false;">mousa</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setXAxisType('dag'); return false;">dag</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setXAxisType('khotian'); return false;">khotian</a></li>
-            </ul>
+        <div class="col-md-3">
+            <label for="x-axis-type" class="form-label">X Axis</label>
+            <select id="x-axis-type" class="form-select" onchange="setXAxisType(this.value)">
+                <option value="id">ID</option>
+                <option value="gher">Gher</option>
+                <option value="mousa">Mousa</option>
+                <option value="dag">Dag</option>
+                <option value="khotian">Khotian</option>
+            </select>
         </div>
 
-        <div class="dropdown col-md-3">
-            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownYAxis"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                y-axis
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownYAxis">
-                <li><a class="dropdown-item" href="#" onclick="setYAxisType('amount'); return false;">amount</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setYAxisType('plane_land'); return false;">plane_land</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setYAxisType('par_cannel'); return false;">par_cannel</a></li>
-            </ul>
-        </div>
 
         <div class="dropdown col-md-3">
-            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Chart type
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#" onclick="setChartType('bar'); return false;">Bar Chart</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setChartType('line'); return false;">Line Chart</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setChartType('scatter'); return false;">Scatter Plot</a></li>
-            </ul>
+            <label for="y-axis-type" class="form-label">Y Axis</label>
+            <select id="y-axis-type" class="form-select" onchange="setYAxisType(this.value)">
+                <option value="amount">amount</option>
+                <option value="plane_land">plane_land</option>
+                <option value="par_cannel">par_cannel</option>
+            </select>
         </div>
-        <div class="col-md-3 d-flex align-items-end">
-            <button onclick="filterChart()" class="btn btn-dark w-100">Generate Chart</button>
+
+        <div class="col-md-2">
+            <label for="chart-type" class="form-label">Chart Type</label>
+            <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="scatter">Scatter Plot</option>
+            </select>
         </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button onclick="filterChart()" class="btn btn-secondary w-100">Generate Chart</button>
+        </div>
+
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="downloadChartAsPDF()" class="btn btn-secondary w-100">Download Chart as PDF</button>
         </div>
