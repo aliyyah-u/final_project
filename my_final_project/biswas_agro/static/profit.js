@@ -6,24 +6,8 @@ function setChartType(type) {
 }
 
 async function filterProfitChart() {
-    const startMonth = document.getElementById('start-date').value; // YYYY-MM
-    const endMonth = document.getElementById('end-date').value;
-
-    let startDate = null;
-    let endDate = null;
-
-    // Only calculate dates if values chosen
-    if (startMonth) {
-        startDate = startMonth + '-01'; // 1st day of month
-    }
-    if (endMonth) {
-        const dateParts = endMonth.split('-');
-        const year = parseInt(dateParts[0]);
-        const month = parseInt(dateParts[1]);
-        const lastDay = new Date(year, month, 0); // last day of end month (next month 0th day)
-        endDate = lastDay.toISOString().slice(0, 10); // YYYY-MM-DD
-
-    }
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
 
     let costUrl = '/api/cost/';
     let fishbuyUrl = '/api/fishbuy/';
@@ -113,9 +97,34 @@ function drawProfitChart(data) {
     }
 
     const isHorizontalBar = selectedChartType === 'horizontalBar';
+    const isSpline = selectedChartType === 'spline';
+    const isArea = selectedChartType === 'area';
+
+    let chartType;
+    if (isHorizontalBar) {
+        chartType = 'bar';
+    } else if (isSpline || selectedChartType === 'line' || isArea) {
+        chartType = 'line';
+    } else {
+        chartType = selectedChartType;
+    }
+
+    let tensionValue;
+    if (isSpline) {
+        tensionValue = 0.4;
+    } else {
+        tensionValue = 0;
+    }
+
+    let indexAxisValue;
+    if (isHorizontalBar) {
+        indexAxisValue = 'y';
+    } else {
+        indexAxisValue = 'x';
+    }
 
     profitChart = new Chart(ctx, {
-        type: isHorizontalBar ? 'bar' : (selectedChartType === 'area' ? 'line' : selectedChartType),
+        type: chartType,
         data: {
             labels,
             datasets: [
@@ -124,19 +133,21 @@ function drawProfitChart(data) {
                     data: totalCostData,
                     backgroundColor: 'rgba(220, 53, 69, 0.6)',
                     borderColor: 'rgba(220, 53, 69, 0.6)',
-                    fill: selectedChartType === 'area',
+                    fill: isArea,
+                    tension: tensionValue
                 },
                 {
                     label: 'Earnings ৳',
                     data: earningsData,
                     backgroundColor: 'rgba(167, 189, 167, 0.6)',
                     borderColor: 'rgba(167, 189, 167, 0.6)',
-                    fill: selectedChartType === 'area',
+                    fill: isArea,
+                    tension: tensionValue
                 }
             ]
         },
         options: {
-            indexAxis: isHorizontalBar ? 'y' : 'x',
+            indexAxis: indexAxisValue,
             responsive: true,
             plugins: {
                 tooltip: {
@@ -186,7 +197,7 @@ function drawProfitChart(data) {
     });
 }
 
-function downloadChartAsPDF() { 
+function downloadChartAsPDF() {
     const canvas = document.getElementById('profitChart');
     const imgData = canvas.toDataURL('image/png');
 
