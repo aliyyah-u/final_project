@@ -1,82 +1,106 @@
-let yearsPopulated = false;
-let myChart = null;
+let fishChart = null;
 let selectedChartType = 'bar';
 
-function extractYearsFromData(data) {
-    const yearSet = new Set();
-    data.forEach(item => {
-        const year = new Date(item.date).getFullYear();
-        yearSet.add(year);
-    });
-    return [...yearSet]; //convert set into array
+function setChartType(type) {
+    selectedChartType = type;
 }
 
-function populateYearDropdown(years) {
-    if (yearsPopulated) return;
+async function filterYieldChart() {
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
 
-    const select = document.getElementById('year-select');
-    years.sort((a, b) => b - a); // Order dropdown latest years first
+    let url = '/api/fishbuy/';
+    const params = new URLSearchParams();
 
-    years.forEach(year => {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        select.appendChild(option);
-    });
-    yearsPopulated = true;
+    // Add the selected date range as parameters
+    if (startDate) params.append('start', startDate);
+    if (endDate) params.append('end', endDate);
+    if (params.toString()) url += `?${params.toString()}`;
+
+    const response = await fetch(url);
+    const fishbuyData = await response.json();
+
+    const collected = collectByDate(fishbuyData);
+    drawChart(collected);
+
 }
 
-async function fetchYears() {
-    const response = await fetch('/api/fishbuy/');
-    const data = await response.json();
+function collectByDate(fishbuyData) {
+    const map = {};
+    const groupBy = document.getElementById('grouping').value;
 
-    const years = extractYearsFromData(data);
-    populateYearDropdown(years);
-}
-
-function totalFish(data, selectedYear) {
-    const fish = {};
-
-    for (let i = 0; i < data.length; i++) {
-        const item = data[i];
-        const date = new Date(item.date);
-        const year = date.getFullYear();
-
-        if (selectedYear && year != selectedYear) {
-            continue;
-        }
-
-        if (!fish[year]) {
-            fish[year] = 0;
-        }
-
-        fish[year] += item.fishquantity;
+    function getGroup(date) {
+        if (groupBy === 'month') return date.slice(0, 7);        // YYYY-MM
+        if (groupBy === 'year') return date.slice(0, 4);         // YYYY
+        return date;                                             // Full date (default)
     }
 
-    return fish;
+    // Aggregate fishbuy price per date
+    fishbuyData.forEach(item => {
+        const group = getGroup(item.date);
+        map[group] = map[group] || { group, fishbuy: 0 };
+        map[group].fishbuy += parseFloat(item.fishquantity || 0);
+    });
+
+    // Return as sorted array
+    return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
-function drawFishBuyChart(data) {
-    const labels = data.map(item => item.year);
-    const quantities = data.map(item => item.quantity);
+function drawChart(data) {
+    const labels = data.map(item => item.group);
+    const fishBuyData = data.map(item => item.fishbuy || 0);
 
-    const ctx = document.getElementById('fishChart').getContext('2d');
+    const ctx = document.getElementById('fishChart');
 
-    if (myChart) {
-        myChart.destroy();
+    if (fishChart) {
+        fishChart.destroy();
     }
 
-    myChart = new Chart(ctx, {
-        type: selectedChartType,
+    const isHorizontalBar = selectedChartType === 'horizontalBar';
+    const isSpline = selectedChartType === 'spline';
+    const isArea = selectedChartType === 'area';
+
+    let chartType;
+    if (isHorizontalBar) {
+        chartType = 'bar';
+    } else if (isSpline || selectedChartType === 'line' || isArea) {
+        chartType = 'line';
+    } else {
+        chartType = selectedChartType;
+    }
+
+    let tensionValue;
+    if (isSpline) {
+        tensionValue = 0.4;
+    } else {
+        tensionValue = 0;
+    }
+
+    let indexAxisValue;
+    if (isHorizontalBar) {
+        indexAxisValue = 'y';
+    } else {
+        indexAxisValue = 'x';
+    }
+
+    fishChart = new Chart(ctx, {
+        type: chartType,
         data: {
             labels: labels,
-            datasets: [{
-                label: 'Fish Quantity per Year',
-                data: quantities,
-                backgroundColor: 'rgba(167, 189, 167, 0.6)'
-            }]
-        },
+            datasets: [
+                {
+                label: 'Fish Quantity',
+                data: fishBuyData,
+                backgroundColor: 'rgba(167, 189, 167, 0.6)',
+                borderColor: 'rgba(167, 189, 167, 0.6)',
+                fill: isArea,
+                tension: tensionValue
+            }
+        ]
+    },
         options: {
+            indexAxis: indexAxisValue,
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true
@@ -86,29 +110,7 @@ function drawFishBuyChart(data) {
     });
 }
 
-async function loadFishBuyChart() {
-    const selectedYear = document.getElementById('year-select').value;
-    const response = await fetch('/api/fishbuy/');
-    const data = await response.json();
-    const fish = totalFish(data, selectedYear);
-
-    const chartData = Object.keys(fish).map(year => ({
-        year,
-        quantity: fish[year]
-    })).sort((a, b) => a.year - b.year);
-
-    drawFishBuyChart(chartData);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    fetchYears(); // Populate year dropdown on page load
-});
-
-document.getElementById('generate-chart-button').addEventListener('click', () => {
-    loadFishBuyChart(); // Load and generate the chart when the button is clicked
-});
-
-function downloadChartAsPDF() { 
+function downloadChartAsPDF() {
     const canvas = document.getElementById('fishChart');
     const imgData = canvas.toDataURL('image/png');
 

@@ -62,7 +62,7 @@ function drawChart(data) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Item amount',
+                label: 'Item amount ৳',
                 data: myData,
                 backgroundColor: 'rgba(167, 189, 167, 0.6)',
                 borderColor: 'rgba(167, 189, 167, 0.6)',
