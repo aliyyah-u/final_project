@@ -56,21 +56,47 @@ function drawChart(data) {
     }
 
     const isHorizontalBar = selectedChartType === 'horizontalBar';
+    const isSpline = selectedChartType === 'spline';
+    const isArea = selectedChartType === 'area';
+
+    let chartType;
+    if (isHorizontalBar) {
+        chartType = 'bar';
+    } else if (isSpline || selectedChartType === 'line' || isArea) {
+        chartType = 'line';
+    } else {
+        chartType = selectedChartType;
+    }
+
+    let tensionValue;
+    if (isSpline) {
+        tensionValue = 0.4;
+    } else {
+        tensionValue = 0;
+    }
+
+    let indexAxisValue;
+    if (isHorizontalBar) {
+        indexAxisValue = 'y';
+    } else {
+        indexAxisValue = 'x';
+    }
 
     myChart = new Chart(ctx, {
-        type: isHorizontalBar ? 'bar' : (selectedChartType === 'area' ? 'line' : selectedChartType),
+        type: chartType,
         data: {
-            labels: labels,
+            labels,
             datasets: [{
                 label: 'Investment amount ৳',
                 data: investmentData,
                 backgroundColor: 'rgba(167, 189, 167, 0.6)',
                 borderColor: 'rgba(167, 189, 167, 0.6)',
-                fill: selectedChartType === 'area',
+                fill: isArea,
+                tension: tensionValue
             }]
         },
         options: {
-            indexAxis: isHorizontalBar ? 'y' : 'x',
+            indexAxis: indexAxisValue,
             scales: {
                 y: {
                     beginAtZero: true
