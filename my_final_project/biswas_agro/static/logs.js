@@ -58,11 +58,12 @@ function drawChart(data) {
     const isHorizontalBar = selectedChartType === 'horizontalBar';
     const isSpline = selectedChartType === 'spline';
     const isArea = selectedChartType === 'area';
+    const isScatter = selectedChartType === 'scatter';
 
     let chartType;
     if (isHorizontalBar) {
         chartType = 'bar';
-    } else if (isSpline || selectedChartType === 'line' || isArea) {
+    } else if (isSpline || selectedChartType === 'line' || isArea || isScatter) {
         chartType = 'line';
     } else {
         chartType = selectedChartType;
@@ -92,11 +93,13 @@ function drawChart(data) {
                 backgroundColor: 'rgba(167, 189, 167, 0.6)',
                 borderColor: 'rgba(167, 189, 167, 0.6)',
                 fill: isArea,
-                tension: tensionValue
+                tension: tensionValue,
+                showLine: !isScatter,
             }]
         },
         options: {
             indexAxis: indexAxisValue,
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true

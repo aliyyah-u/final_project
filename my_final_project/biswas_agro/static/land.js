@@ -77,6 +77,7 @@ function drawChart(data) {
         },
         options: {
             indexAxis: isHorizontalBar ? 'y' : 'x',
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true
