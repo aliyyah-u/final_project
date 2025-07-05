@@ -38,6 +38,6 @@ urlpatterns = [
      path('loans/', views.loans, name='loans'),
     path('investment/', views.investment, name='investment'),
     path('land/', views.land, name='land'),
-    path('staff/', views.staff, name='staff'),
+    path('sources/', views.sources, name='sources'),
     path('logs/', views.logs, name='logs'),
 ]

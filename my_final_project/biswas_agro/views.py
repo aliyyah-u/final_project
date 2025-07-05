@@ -40,8 +40,8 @@ def loans(request):
     template = loader.get_template('loans.html')
     return HttpResponse(template.render())
 
-def staff(request):
-    template = loader.get_template('staff.html')
+def sources(request):
+    template = loader.get_template('sources.html')
     return HttpResponse(template.render())
 
 def logs(request):

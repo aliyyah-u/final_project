@@ -1,0 +1,68 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}Earnings vs Costs (per Source){% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2 class="mb-4">Earnings vs Costs (per Source)</h2>
+    <div class="row g-3 mb-3">
+        <div class="col-md-2">
+            <label for="start-date" class="form-label">Start Date</label>
+            <input type="date" id="start-date" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <label for="end-date" class="form-label">End Date</label>
+            <input type="date" id="end-date" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <label for="grouping" class="form-label">Group By</label>
+            <select id="grouping" class="form-select">
+                <option value="date">Date</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="chart-type" class="form-label">Chart Type</label>
+            <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
+                <option value="bar">Bar Chart</option>
+                <option value="horizontalBar">Horizontal Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="spline">Spline Chart</option>
+                <option value="area">Area Chart</option>
+                <option value="scatter">Scatter Plot</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="source" class="form-label">Source</label>
+            <select id="source" class="form-select">
+                <option value="">All Sources</option>
+                <option value="1">North</option>
+                <option value="2">East</option>
+                <option value="3">South</option>
+                <option value="4">West</option>          
+                <option value="5">Uzzal</option>          
+            </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button onclick="filterChart()" class="btn btn-secondary w-100">Generate Chart</button>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button onclick="downloadChartAsPDF()" class="btn btn-secondary w-100">Download Chart as PDF</button>
+        </div>
+    </div>
+</div>
+
+<canvas id="myChart"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'sources.js' %}"></script>
+{% endblock %}
