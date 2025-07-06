@@ -1,0 +1,98 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}Profit Analysis{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2 class="mb-4">Profit Analysis</h2>
+    <div class="row g-3 mb-3">
+        <div class="col-md-2">
+            <label for="start-date" class="form-label">Start Date</label>
+            <input type="date" id="start-date" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <label for="end-date" class="form-label">End Date</label>
+            <input type="date" id="end-date" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <label for="grouping" class="form-label">Group By</label>
+            <select id="grouping" class="form-select">
+                <option value="date">Date</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="chart-type" class="form-label">Chart Type</label>
+            <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
+                <option value="bar">Bar Chart</option>
+                <option value="horizontalBar">Horizontal Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="spline">Spline Chart</option>
+                <option value="area">Area Chart</option>
+                <option value="scatter">Scatter Plot</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="source" class="form-label">Source</label>
+            <select id="source" class="form-select">
+                <option value="">All Sources</option>
+                <option value="1">North</option>
+                <option value="2">East</option>
+                <option value="3">South</option>
+                <option value="4">West</option>          
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="sector" class="form-label">Sector</label>
+            <select id="sector" class="form-select">
+                <option value="">All Sectors</option>
+                <option value="0">Others</option>
+                <option value="1">Fish</option>
+                <option value="2">Vegetables</option>        
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="fishname" class="form-label">Fish</label>
+            <select id="fishname" class="form-select">
+                <option value="1">All Fish</option>
+                <option value="2">রুই</option>
+                <option value="3">কাতলা</option>
+                <option value="4">মৃগেল</option> 
+                <option value="5">গ্রাস কার্প </option>
+                <option value="6">পুটি </option> 
+                <option value="7">তেলাপিয়া </option>
+                <option value="8">চিংড়ি </option>
+                <option value="9">সিলভার কার্প </option> 
+                <option value="10">ধানী</option>
+                <option value="11">জাপানি </option>
+                <option value="12">মাছের ডিম</option> 
+                <option value="13">ব্লাড কার্প </option>
+                <option value="14">ব্রিগেড </option>
+                <option value="16">শোল</option> 
+            </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button onclick="filterChart()" class="btn btn-secondary w-100">Generate Chart</button>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button onclick="downloadChartAsPDF()" class="btn btn-secondary w-100">Download Chart as PDF</button>
+        </div>
+    </div>
+</div>
+
+<canvas id="myChart"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'businessAnalysis.js' %}"></script>
+{% endblock %}

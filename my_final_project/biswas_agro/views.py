@@ -56,6 +56,10 @@ def logs(request):
     template = loader.get_template('logs.html')
     return HttpResponse(template.render())
 
+def businessAnalysis(request):
+    template = loader.get_template('businessAnalysis.html')
+    return HttpResponse(template.render())
+
 class CostViewSet(viewsets.ModelViewSet):
     queryset = Cost.objects.all()
     serializer_class = CostSerializer
