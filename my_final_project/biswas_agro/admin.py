@@ -1,10 +1,16 @@
 from django.contrib import admin
+from import_export.admin import ExportMixin
 from .models import (
     Cost, Fishbuy, Earning, Investment, Staff, Staffs, LoanTransactions, Loandetails, LoanProvidersInfo, Costitems, Costpurpose,
     Users, Usersinfo, Dailyworks, Fishtype, Items, Land, Mousa, Salary, Sectors, Sources, Units
 )
+from .resource import (
+    EarningResource, CostResource, FishbuyResource, InvestmentResource,
+    SalaryResource, DailyworksResource, LoanTransactionsResource
+)
 
-class CostAdmin(admin.ModelAdmin):
+class CostAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = CostResource
     list_display = (
         "date", "costcategory", "costitems", "buyamount", "unit", "cost", "status",
         "buyer", "buyvoucher", "comment", "logs", "costitems_id"
@@ -16,19 +22,22 @@ class CostitemsAdmin(admin.ModelAdmin):
 class CostpurposeAdmin(admin.ModelAdmin):
     list_display = ("costpurpose",)
 
-class DailyworksAdmin(admin.ModelAdmin):
+class DailyworksAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = DailyworksResource
     list_display = ("date", "worktype", "item", "amount", "unit", "personel", "comment", "logs")
 
-class FishbuyAdmin(admin.ModelAdmin):
+class FishbuyAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = FishbuyResource
     list_display = (
         "date", "fishname", "buyfrom", "buyamount", "fishquantity", "price", "status", "fishto",
         "vouchar", "comments", "logs"
-        )
+    )
 
 class FishtypeAdmin(admin.ModelAdmin):
     list_display = ("fishname", "logs")
 
-class InvestmentAdmin(admin.ModelAdmin):
+class InvestmentAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = InvestmentResource
     list_display = ("date", "name", "amount", "comments", "logs")
 
 class StaffAdmin(admin.ModelAdmin):
@@ -40,7 +49,8 @@ class StaffsAdmin(admin.ModelAdmin):
 class LoanProvidersInfoAdmin(admin.ModelAdmin):
     list_display = ("investerid", "name", "address", "mobile", "refference", "logs")
 
-class LoanTransactionsAdmin(admin.ModelAdmin):
+class LoanTransactionsAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = LoanTransactionsResource
     list_display = ("loanid", "investerid", "date", "payment", "voucherno")
 
 class LoandetailsAdmin(admin.ModelAdmin):
@@ -52,10 +62,12 @@ class LandAdmin(admin.ModelAdmin):
 class MousaAdmin(admin.ModelAdmin):
     list_display = ("mousa", "dag", "owner", "date", "amount", "term", "vc_numnber", "status", "log")
 
-class SalaryAdmin(admin.ModelAdmin):
+class SalaryAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = SalaryResource
     list_display = (
         "date", "purpose", "reason", "quantity", "rate", "total", "personel", 
-        "voucher", "status", "comment", "logs")
+        "voucher", "status", "comment", "logs"
+    )
 
 class SectorsAdmin(admin.ModelAdmin):
     list_display = ("sector", "logs")
@@ -72,11 +84,12 @@ class UsersAdmin(admin.ModelAdmin):
 class UsersinfoAdmin(admin.ModelAdmin):
     list_display = ("name", "username", "role", "email", "mobile")
 
-class EarningAdmin(admin.ModelAdmin):
+class EarningAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = EarningResource
     list_display = (
         "date", "sector", "item", "source", "quantity_per_unit", "quantity", "unit", "price",
         "status", "memo", "comment", "logs"
-        )
+    )
 
 class ItemsAdmin(admin.ModelAdmin):
     list_display = ("sector", "item_name", "logs")

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'biswas_agro',
-    'rest_framework'
+    'rest_framework',
+    'import_export'
 ]
 
 JAZZMIN_SETTINGS = {
