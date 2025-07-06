@@ -40,9 +40,7 @@ async function filterChart() {
 
     const { fishName } = getSelectedFish();
 
-    let costUrl = '/api/cost/';
     let fishbuyUrl = '/api/fishbuy/';
-    let salaryUrl = '/api/salary/';
 
     // Add the selected date range as parameters
     const params = new URLSearchParams();
@@ -50,20 +48,14 @@ async function filterChart() {
     if (endDate) params.append('end', endDate);
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    costUrl += query;
     fishbuyUrl += query;
-    salaryUrl += query;
 
-    const [costRes, fishbuyRes, salaryRes] = await Promise.all([
-        fetch(costUrl),
-        fetch(fishbuyUrl),
-        fetch(salaryUrl),
+    const [fishbuyRes] = await Promise.all([
+        fetch(fishbuyUrl)
     ]);
 
-    const [costData, fishbuyData, salaryData] = await Promise.all([
-        costRes.json(),
-        fishbuyRes.json(),
-        salaryRes.json(),
+    const [fishbuyData] = await Promise.all([
+        fishbuyRes.json()
     ]);
 
     // Filter fishbuy data by source
@@ -72,11 +64,11 @@ async function filterChart() {
     filteredFishbuyData = fishbuyData.filter(item => item.fishname === fishName);
 }
 
-    const collected = collectByDate(costData, filteredFishbuyData, salaryData);
+    const collected = collectByDate(filteredFishbuyData);
     drawChart(collected, fishName);
 }
 
-function collectByDate(costData, fishbuyData, salaryData) {
+function collectByDate(fishbuyData) {
     const map = {};
     const groupBy = document.getElementById('grouping').value;
 
@@ -86,25 +78,11 @@ function collectByDate(costData, fishbuyData, salaryData) {
         return date;                                         // Full date (default)
     }
 
-    // Aggregate cost per group
-    costData.forEach(item => {
-        const group = getGroup(item.date);
-        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0 }; // group = date/month/year key
-        map[group].cost += parseFloat(item.cost || 0);
-    });
-
     // Aggregate fishbuy per group
     fishbuyData.forEach(item => {
         const group = getGroup(item.date);
-        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0 };
+        map[group] = map[group] || { group, fishbuy: 0 };
         map[group].fishbuy += parseFloat(item.price || 0);
-    });
-
-    // Aggregate salary per group
-    salaryData.forEach(item => {
-        const group = getGroup(item.date);
-        map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0 };
-        map[group].salary += parseFloat(item.total || 0);
     });
 
     // Return as sorted array
@@ -113,7 +91,7 @@ function collectByDate(costData, fishbuyData, salaryData) {
 
 function drawChart(data, fishName) {
     const labels = data.map(item => item.group);
-    const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));
+    const fishCostData = data.map(item => ((item.fishbuy || 0)));
 
     const ctx = document.getElementById('myChart');
 
@@ -155,8 +133,8 @@ function drawChart(data, fishName) {
             labels,
             datasets: [
                 {
-                    label: 'Total Cost ৳ ('+ 'Fish Name: ' + fishName + ')',
-                    data: totalCostData,
+                    label: 'Cost ৳ ('+ 'Fish Name: ' + fishName + ')',
+                    data: fishCostData,
                     backgroundColor: 'rgba(220, 53, 69, 0.6)',
                     borderColor: 'rgba(220, 53, 69, 0.6)',
                     fill: isArea,
@@ -175,19 +153,12 @@ function drawChart(data, fishName) {
                             const index = context.dataIndex;
                             const item = data[index];
 
-                            const itemCost = item.cost || 0;
                             const fishCost = item.fishbuy || 0;
-                            const salary = item.salary || 0;
-                            const totalCost = itemCost + fishCost + salary;
 
-                            if (context.dataset.label.startsWith('Total Cost ৳')) {
+                            if (context.dataset.label.startsWith('Cost ৳')) {
 
                                 return [
-                                    'Total Cost: ' + totalCost,
-                                    'Cost Breakdown: ',
-                                    'Item Cost: ' + itemCost,
-                                    'Fish Cost: ' + fishCost,
-                                    'Salary: ' + salary
+                                    'Fish Cost: ' + fishCost
                                 ];
                             }
                             return '';
@@ -221,5 +192,5 @@ function downloadChartAsPDF() {
     const y = 10;
 
     pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
-    pdf.save('sources_chart.pdf');
+    pdf.save('fishNameChart.pdf');
 }
