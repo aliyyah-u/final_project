@@ -187,9 +187,10 @@ function collectByDate(costData, fishbuyData, salaryData, earningData) {
     return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
-function drawChart(data) {
+function drawChart(data, sourceName, sectorName) {
     const labels = data.map(item => item.group);
     const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));
+    const earningsData = data.map(item => item.earnings || 0);
 
     const ctx = document.getElementById('myChart');
 
@@ -231,11 +232,20 @@ function drawChart(data) {
             labels,
             datasets: [
                 {
-                    label: 'Total Cost ৳ ('+ 'Fish: ' + fish + ')'
+                    label: 'Total Cost ৳ ('+ 'Source: ' + sourceName + ', ' + ' Sector: ' + sectorName + ')'
                     ,
                     data: totalCostData,
                     backgroundColor: 'rgba(220, 53, 69, 0.6)',
                     borderColor: 'rgba(220, 53, 69, 0.6)',
+                    fill: isArea,
+                    tension: tensionValue,
+                    showLine: !isScatter,
+                },
+                {
+                    label: 'Earnings ৳ (' + 'Source: '+ sourceName + ', ' + ' Sector: ' + sectorName + ')',
+                    data: earningsData,
+                    backgroundColor: 'rgba(167, 189, 167, 0.6)',
+                    borderColor: 'rgba(167, 189, 167, 0.6)',
                     fill: isArea,
                     tension: tensionValue,
                     showLine: !isScatter,
@@ -267,6 +277,14 @@ function drawChart(data) {
                                     'Item Cost: ' + itemCost,
                                     'Fish Cost: ' + fishCost,
                                     'Salary: ' + salary,
+                                    '',
+                                    'Profit: ' + profit
+                                ];
+                            }
+
+                            if (context.dataset.label.startsWith('Earnings ৳')) {
+                                return [
+                                    'Earnings: ' + earnings,
                                     '',
                                     'Profit: ' + profit
                                 ];
