@@ -39,5 +39,7 @@ urlpatterns = [
     path('investment/', views.investment, name='investment'),
     path('land/', views.land, name='land'),
     path('sources/', views.sources, name='sources'),
+    path('fishname/', views.fishname, name='fishname'),
     path('logs/', views.logs, name='logs'),
+    path('sectors/', views.sectors, name='sectors'),
 ]

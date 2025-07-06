@@ -44,6 +44,14 @@ def sources(request):
     template = loader.get_template('sources.html')
     return HttpResponse(template.render())
 
+def sectors(request):
+    template = loader.get_template('sectors.html')
+    return HttpResponse(template.render())
+
+def fishname(request):
+    template = loader.get_template('fishname.html')
+    return HttpResponse(template.render())
+
 def logs(request):
     template = loader.get_template('logs.html')
     return HttpResponse(template.render())
