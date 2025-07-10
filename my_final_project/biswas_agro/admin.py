@@ -12,33 +12,33 @@ from .resource import (
 class CostAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = CostResource
     list_display = (
-        "date", "costcategory", "costitems", "buyamount", "unit", "cost", "status",
+        "id", "date", "costcategory", "costitems", "buyamount", "unit", "cost", "status",
         "buyer", "buyvoucher", "comment", "logs", "costitems_id"
     )
 
 class CostitemsAdmin(admin.ModelAdmin):
-    list_display = ("costitems", "sector", "logs")
+    list_display = ("id", "sector", "costitems", "logs")
 
 class CostpurposeAdmin(admin.ModelAdmin):
-    list_display = ("costpurpose",)
+    list_display = ("id", "costpurpose",)
 
 class DailyworksAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = DailyworksResource
-    list_display = ("date", "worktype", "item", "amount", "unit", "personel", "comment", "logs")
+    list_display = ("id", "date", "worktype", "item", "amount", "unit", "personel", "comment", "logs")
 
 class FishbuyAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = FishbuyResource
     list_display = (
-        "date", "fishname", "buyfrom", "buyamount", "fishquantity", "price", "status", "fishto",
+        "id", "date", "fishname", "buyfrom", "buyamount", "fishquantity", "price", "status", "fishto",
         "vouchar", "comments", "logs"
     )
 
 class FishtypeAdmin(admin.ModelAdmin):
-    list_display = ("fishname", "logs")
+    list_display = ("id", "fishname", "logs")
 
 class InvestmentAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = InvestmentResource
-    list_display = ("date", "name", "amount", "comments", "logs")
+    list_display = ("id", "date", "name", "amount", "comments", "logs")
 
 class StaffAdmin(admin.ModelAdmin):
     list_display = ("staffno", "name", "post", "salary", "address", "mobile", "reference", "log")
@@ -57,20 +57,20 @@ class LoandetailsAdmin(admin.ModelAdmin):
     list_display = ("loanid", "investerid", "amount", "interestpermonth", "conditions", "logs")
 
 class LandAdmin(admin.ModelAdmin):
-    list_display = ("gher", "mousa", "dag", "khotian", "amount", "plane_land", "par_cannel", "owners", "comment", "logs")
+    list_display = ("id", "gher", "mousa", "dag", "khotian", "amount", "plane_land", "par_cannel", "owners", "comment", "logs")
 
 class MousaAdmin(admin.ModelAdmin):
-    list_display = ("mousa", "dag", "owner", "date", "amount", "term", "vc_numnber", "status", "log")
+    list_display = ("id", "mousa", "dag", "owner", "date", "amount", "term", "vc_numnber", "status", "log")
 
 class SalaryAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = SalaryResource
     list_display = (
-        "date", "purpose", "reason", "quantity", "rate", "total", "personel", 
+        "id", "date", "purpose", "reason", "quantity", "rate", "total", "personel", 
         "voucher", "status", "comment", "logs"
     )
 
 class SectorsAdmin(admin.ModelAdmin):
-    list_display = ("sector", "logs")
+    list_display = ("id", "sector", "logs")
 
 class SourcesAdmin(admin.ModelAdmin):
     list_display = ("source", "logs")
@@ -79,20 +79,20 @@ class UnitsAdmin(admin.ModelAdmin):
     list_display = ("id", "unit", "logs")
 
 class UsersAdmin(admin.ModelAdmin):
-    list_display = ("id", "username", "email", "trn_date")
+    list_display = ("id", "username", "email", "password", "trn_date")
 
 class UsersinfoAdmin(admin.ModelAdmin):
-    list_display = ("name", "username", "role", "email", "mobile")
+    list_display = ("id", "name", "username", "password", "role", "email", "mobile")
 
 class EarningAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = EarningResource
     list_display = (
-        "date", "sector", "item", "source", "quantity_per_unit", "quantity", "unit", "price",
+        "id", "date", "sector", "item", "source", "quantity_per_unit", "quantity", "unit", "price",
         "status", "memo", "comment", "logs"
     )
 
 class ItemsAdmin(admin.ModelAdmin):
-    list_display = ("sector", "item_name", "logs")
+    list_display = ("id", "sector", "item_name", "logs")
 
 admin.site.register(Cost, CostAdmin)
 admin.site.register(Costitems, CostitemsAdmin)
