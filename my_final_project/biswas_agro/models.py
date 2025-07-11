@@ -88,7 +88,7 @@ class Cost(models.Model):
     buyer = models.CharField(max_length=20)
     buyvoucher = models.CharField(max_length=20)
     comment = models.CharField(max_length=50)
-    logs = models.CharField(max_length=50)
+    logs = models.CharField(max_length=50, blank=True, null=True)
     costitems_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -102,7 +102,7 @@ class Cost(models.Model):
 class Costitems(models.Model):
     sector = models.IntegerField()
     costitems = models.CharField(unique=True, max_length=20)
-    logs = models.CharField(max_length=20)
+    logs = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -131,7 +131,7 @@ class Dailyworks(models.Model):
     unit = models.CharField(max_length=10)
     personel = models.CharField(max_length=20)
     comment = models.CharField(max_length=50)
-    logs = models.CharField(max_length=50)
+    logs = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -198,7 +198,7 @@ class Earning(models.Model):
     status = models.IntegerField(blank=True, null=True, db_comment='1 is paid, 2 is pending ')
     memo = models.CharField(max_length=15)
     comment = models.CharField(max_length=30)
-    logs = models.CharField(max_length=30)
+    logs = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -219,7 +219,7 @@ class Fishbuy(models.Model):
     fishto = models.CharField(max_length=50)
     vouchar = models.CharField(max_length=15)
     comments = models.CharField(max_length=50)
-    logs = models.CharField(max_length=50)
+    logs = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -231,7 +231,7 @@ class Fishbuy(models.Model):
 
 class Fishtype(models.Model):
     fishname = models.CharField(db_column='FishName', unique=True, max_length=20)  # Field name made lowercase.
-    logs = models.CharField(max_length=30)
+    logs = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -246,7 +246,7 @@ class Investment(models.Model):
     name = models.CharField(max_length=20)
     amount = models.FloatField()
     comments = models.CharField(max_length=50)
-    logs = models.CharField(max_length=50)
+    logs = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -259,7 +259,7 @@ class Investment(models.Model):
 class Items(models.Model):
     sector = models.CharField(max_length=20)
     item_name = models.CharField(unique=True, max_length=15)
-    logs = models.CharField(max_length=30)
+    logs = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -279,7 +279,7 @@ class Land(models.Model):
     par_cannel = models.FloatField()
     owners = models.CharField(max_length=200)
     comment = models.CharField(max_length=100)
-    logs = models.CharField(max_length=100)
+    logs = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -295,7 +295,7 @@ class LoanProvidersInfo(models.Model):
     address = models.CharField(db_column='Address', max_length=50)  # Field name made lowercase.
     mobile = models.TextField(db_column='Mobile')  # Field name made lowercase.
     refference = models.CharField(db_column='Refference', max_length=20)  # Field name made lowercase.
-    logs = models.CharField(max_length=50)
+    logs = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -326,7 +326,7 @@ class Loandetails(models.Model):
     amount = models.IntegerField()
     interestpermonth = models.DecimalField(max_digits=3, decimal_places=2)
     conditions = models.CharField(max_length=50)
-    logs = models.CharField(max_length=30)
+    logs = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -366,7 +366,7 @@ class Salary(models.Model):
     voucher = models.CharField(max_length=5)
     status = models.IntegerField(blank=True, null=True, db_comment='1 is paid, 2 is due')
     comment = models.CharField(max_length=20)
-    logs = models.CharField(max_length=30)
+    logs = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -378,7 +378,7 @@ class Salary(models.Model):
 
 class Sectors(models.Model):
     sector = models.CharField(unique=True, max_length=15)
-    logs = models.CharField(max_length=30)
+    logs = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -390,7 +390,7 @@ class Sectors(models.Model):
 
 class Sources(models.Model):
     source = models.CharField(max_length=20)
-    logs = models.CharField(max_length=20)
+    logs = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -408,7 +408,7 @@ class Staff(models.Model):
     address = models.CharField(max_length=30)
     mobile = models.CharField(max_length=11)
     reference = models.CharField(max_length=15)
-    log = models.CharField(max_length=30)
+    log = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -436,7 +436,7 @@ class Staffs(models.Model):
 class Units(models.Model):
     id = models.IntegerField(primary_key=True)
     unit = models.CharField(max_length=10)
-    logs = models.CharField(max_length=30)
+    logs = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
