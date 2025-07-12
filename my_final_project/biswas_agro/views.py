@@ -60,6 +60,10 @@ def businessAnalysis(request):
     template = loader.get_template('businessAnalysis.html')
     return HttpResponse(template.render())
 
+def prediction(request):
+    template = loader.get_template('prediction.html')
+    return HttpResponse(template.render())
+
 class CostViewSet(viewsets.ModelViewSet):
     queryset = Cost.objects.all()
     serializer_class = CostSerializer

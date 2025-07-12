@@ -42,5 +42,6 @@ urlpatterns = [
     path('fishname/', views.fishname, name='fishname'),
     path('logs/', views.logs, name='logs'),
     path('sectors/', views.sectors, name='sectors'),
-    path('businessAnalysis/', views.businessAnalysis, name='businessAnalysis')
+    path('businessAnalysis/', views.businessAnalysis, name='businessAnalysis'),
+    path('prediction/', views.prediction, name='prediction')
 ]
