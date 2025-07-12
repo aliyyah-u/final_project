@@ -5,70 +5,88 @@ function setChartType(type) {
     selectedChartType = type;
 }
 
+// Load fish dropdown upon page reload
+document.addEventListener('DOMContentLoaded', populateFishDropdown);
+
+async function populateFishDropdown() {
+    const select = document.getElementById('fishname');
+    select.innerHTML = ''; // clear dropdown
+
+    // Add "All Fish" option
+    const optionAll = document.createElement('option');
+    optionAll.value = '';
+    optionAll.textContent = 'All Fish';
+    select.appendChild(optionAll);
+
+    try {
+        const response = await fetch('/api/fishbuy/');
+        const data = await response.json();
+
+        // Collect unique fish names
+        const fishSet = new Set();
+        for (let i = 0; i < data.length; i++) {
+            const name = data[i].fishname;
+            if (name) fishSet.add(name);
+        }
+        const fishNames = Array.from(fishSet);
+
+        // Add each fish from DB to dropdown
+        for (let i = 0; i < fishNames.length; i++) {
+            const option = document.createElement('option');
+            option.value = fishNames[i];
+            option.textContent = fishNames[i];
+            select.appendChild(option);
+        }
+
+    } catch (error) {
+        console.error('Could not load fish:', error);
+    }
+}
+
+// Get selected fish from dropdown
 function getSelectedFish() {
-    const selectedFishId = document.getElementById('fishname').value;
-    
-    const fishMap = {
-        "1": null, // All Fish
-        "2": "রুই",
-        "3": "কাতলা",
-        "4": "মৃগেল",
-        "5": "গ্রাস কার্প",
-        "6": "পুটি",
-        "7": "তেলাপিয়া",
-        "8": "চিংড়ি",
-        "9": "সিলভার কার্প",
-        "10": "ধানী",
-        "11": "জাপানি",
-        "12": "মাছের ডিম",
-        "13": "ব্লাড কার্প",
-        "14": "ব্রিগেড",
-        "16": "শোল"
-    };
-
-    const fishName = fishMap[selectedFishId];
-
-    return {
-        selectedFishId,
-        fishName
-    };
+    const fishName = document.getElementById('fishname').value;
+    return { fishName };
 }
 
 async function filterChart() {
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
+    const start = document.getElementById('start-date').value;
+    const end = document.getElementById('end-date').value;
+    const fishName = getSelectedFish().fishName;
 
-    const { fishName } = getSelectedFish();
+    let url = '/api/fishbuy/';
 
-    let fishbuyUrl = '/api/fishbuy/';
-
-    // Add the selected date range as parameters
     const params = new URLSearchParams();
-    if (startDate) params.append('start', startDate);
-    if (endDate) params.append('end', endDate);
+    if (start) params.append('start', start);
+    if (end) params.append('end', end);
 
-    const query = params.toString() ? `?${params.toString()}` : '';
-    fishbuyUrl += query;
+    const query = params.toString() ? '?' + params.toString() : '';
+    url += query;
 
-    const [fishbuyRes] = await Promise.all([
-        fetch(fishbuyUrl)
-    ]);
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    const [fishbuyData] = await Promise.all([
-        fishbuyRes.json()
-    ]);
+        // Filter by fish name if selected
+        let filtered = data;
+        if (fishName) {
+            filtered = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].fishname === fishName) {
+                    filtered.push(data[i]);
+                }
+            }
+        }
 
-    // Filter fishbuy data by source
-    let filteredFishbuyData = fishbuyData;
-    if (fishName) {
-    filteredFishbuyData = fishbuyData.filter(item => item.fishname === fishName);
+        const grouped = groupByDate(filtered);
+        drawChart(grouped, fishName);
+    } catch (error) {
+        console.error('Error loading chart data:', error);
+    }
 }
 
-    const collected = collectByDate(filteredFishbuyData);
-    drawChart(collected, fishName);
-}
-
-function collectByDate(fishbuyData) {
+// Group data by date/month/year
+function groupByDate(fishbuyData) {
     const map = {};
     const groupBy = document.getElementById('grouping').value;
 
@@ -89,9 +107,10 @@ function collectByDate(fishbuyData) {
     return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
+// Draw chart with Chart.js
 function drawChart(data, fishName) {
     const labels = data.map(item => item.group);
-    const fishCostData = data.map(item => ((item.fishbuy || 0)));
+    const fishCostData = data.map(item => (item.fishbuy || 0));
 
     const ctx = document.getElementById('myChart');
 
@@ -133,7 +152,7 @@ function drawChart(data, fishName) {
             labels,
             datasets: [
                 {
-                    label: 'Cost ৳ ('+ 'Fish Name: ' + fishName + ')',
+                    label: 'Cost (Fish: ' + (fishName || 'All') + ')',
                     data: fishCostData,
                     backgroundColor: 'rgba(220, 53, 69, 0.6)',
                     borderColor: 'rgba(220, 53, 69, 0.6)',
@@ -154,14 +173,8 @@ function drawChart(data, fishName) {
                             const item = data[index];
 
                             const fishCost = item.fishbuy || 0;
-
-                            if (context.dataset.label.startsWith('Cost ৳')) {
-
-                                return [
-                                    'Fish Cost: ' + fishCost
-                                ];
+                            return 'Fish Cost: ' + fishCost;
                             }
-                            return '';
                         }
                     }
                 }
@@ -171,26 +184,19 @@ function drawChart(data, fishName) {
                     beginAtZero: true
                 }
             }
-        }
     });
 }
 
 function downloadChartAsPDF() {
     const canvas = document.getElementById('myChart');
-    const imgData = canvas.toDataURL('image/png');
+    const img = canvas.toDataURL('image/png');
 
     const pdf = new jspdf.jsPDF('portrait');
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const imgProps = pdf.getImageProperties(imgData); // original image (pixels)
-    const pdfWidth = pageWidth * 0.9;     // Scale image width
+    const imgProps = pdf.getImageProperties(img);
+    const width = pageWidth * 0.9;
+    const height = (imgProps.height * width) / imgProps.width;
 
-    // Calculate ratio for fitted pdfHeight from: (new height) / (new width) = (original height) / (original width)
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-    // // Default top-left position (10, 10)
-    const x = 10;
-    const y = 10;
-
-    pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
-    pdf.save('fishNameChart.pdf');
+    pdf.addImage(img, 'PNG', 10, 10, width, height);
+    pdf.save('fish_chart.pdf');
 }
