@@ -30,7 +30,6 @@ class CostitemsAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "sector", "costitems", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -44,7 +43,6 @@ class DailyworksAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "date", "worktype", "item", "amount", "unit", "personel", "comment", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -57,7 +55,6 @@ class FishbuyAdmin(ExportMixin, admin.ModelAdmin):
     )
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -67,7 +64,6 @@ class FishtypeAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "fishname", "logs")
 
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -77,7 +73,6 @@ class InvestmentAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "date", "name", "amount", "comments", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -87,7 +82,6 @@ class StaffAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("staffno", "name", "post", "salary", "address", "mobile", "reference", "log")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -101,7 +95,6 @@ class LoanProvidersInfoAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("investerid", "name", "address", "mobile", "refference", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -111,7 +104,6 @@ class LoanTransactionsAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("loanid", "investerid", "date", "payment", "voucherno")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -121,7 +113,6 @@ class LoandetailsAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("loanid", "investerid", "amount", "interestpermonth", "conditions", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -131,7 +122,6 @@ class LandAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "gher", "mousa", "dag", "khotian", "amount", "plane_land", "par_cannel", "owners", "comment", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -141,7 +131,6 @@ class MousaAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "mousa", "dag", "owner", "date", "amount", "term", "vc_numnber", "status", "log")
     
     def save_model(self, request, obj, form, change):
-        # Only set log if it's empty (i.e. the first creation)
         if not obj.log:
             obj.log = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -154,7 +143,6 @@ class SalaryAdmin(ExportMixin, admin.ModelAdmin):
     )
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -164,7 +152,6 @@ class SectorsAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "sector", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -174,7 +161,6 @@ class SourcesAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("source", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -184,7 +170,6 @@ class UnitsAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "unit", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -205,7 +190,6 @@ class EarningAdmin(ExportMixin, admin.ModelAdmin):
     )
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)
@@ -215,7 +199,6 @@ class ItemsAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "sector", "item_name", "logs")
     
     def save_model(self, request, obj, form, change):
-        # Only set logs if it's empty (i.e. the first creation)
         if not obj.logs:
             obj.logs = f"{request.user.username} {now().strftime('%Y-%m-%d %H:%M:%S')}"
         super().save_model(request, obj, form, change)

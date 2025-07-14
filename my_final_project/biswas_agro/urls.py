@@ -33,9 +33,7 @@ urlpatterns = [
     path('total_cost/', views.total_cost, name='total_cost'),
     path('my_yield/', views.my_yield, name='my_yield'),
     path('profit/', views.profit, name='profit'),
-    path('api/', include(router.urls)), # /api/cost/ & /api/fishbuy/ & /api/earning etc.
-    path('api-auth/', include('rest_framework.urls')),
-     path('loans/', views.loans, name='loans'),
+    path('loans/', views.loans, name='loans'),
     path('investment/', views.investment, name='investment'),
     path('land/', views.land, name='land'),
     path('sources/', views.sources, name='sources'),
@@ -43,5 +41,7 @@ urlpatterns = [
     path('logs/', views.logs, name='logs'),
     path('sectors/', views.sectors, name='sectors'),
     path('businessAnalysis/', views.businessAnalysis, name='businessAnalysis'),
-    path('prediction/', views.prediction, name='prediction')
+    path('prediction/', views.prediction, name='prediction'),
+    path('api/', include(router.urls)), # /api/cost/ & /api/fishbuy/ & /api/earning etc.
+    path('api-auth/', include('rest_framework.urls'))
 ]

@@ -11,12 +11,10 @@
             <label for="start-date" class="form-label">Start Date</label>
             <input type="date" id="start-date" class="form-control">
         </div>
-
         <div class="col-md-2">
             <label for="end-date" class="form-label">End Date</label>
             <input type="date" id="end-date" class="form-control">
         </div>
-
         <div class="col-md-2">
             <label for="grouping" class="form-label">Group By</label>
             <select id="grouping" class="form-select">
@@ -25,7 +23,6 @@
                 <option value="year">Year</option>
             </select>
         </div>
-
         <div class="col-md-2">
             <label for="chart-type" class="form-label">Chart Type</label>
             <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
@@ -37,7 +34,6 @@
                 <option value="scatter">Scatter Plot</option>
             </select>
         </div>
-
         <div class="col-md-2">
             <label for="source" class="form-label">Source</label>
             <select id="source" class="form-select">
@@ -48,11 +44,9 @@
                 <option value="4">West</option>                   
             </select>
         </div>
-
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="filterChart()" class="btn btn-secondary w-100">Generate Chart</button>
         </div>
-
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="downloadChartAsPDF()" class="btn btn-secondary w-100">Download Chart as PDF</button>
         </div>

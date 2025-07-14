@@ -7,7 +7,6 @@
 <div class="container">
     <h2 class="mb-4">Land Analysis</h2>
     <div class="row g-3 mb-3">
-
         <div class="col-md-3">
             <label for="x-axis-type" class="form-label">X Axis</label>
             <select id="x-axis-type" class="form-select" onchange="setXAxisType(this.value)">
@@ -18,8 +17,6 @@
                 <option value="khotian">Khotian</option>
             </select>
         </div>
-
-
         <div class="dropdown col-md-3">
             <label for="y-axis-type" class="form-label">Y Axis</label>
             <select id="y-axis-type" class="form-select" onchange="setYAxisType(this.value)">
@@ -28,7 +25,6 @@
                 <option value="par_cannel">par_cannel</option>
             </select>
         </div>
-
         <div class="col-md-2">
             <label for="chart-type" class="form-label">Chart Type</label>
             <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
@@ -40,11 +36,9 @@
                 <option value="scatter">Scatter Plot</option>
             </select>
         </div>
-
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="filterChart()" class="btn btn-secondary w-100">Generate Chart</button>
         </div>
-
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="downloadChartAsPDF()" class="btn btn-secondary w-100">Download Chart as PDF</button>
         </div>

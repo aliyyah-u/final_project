@@ -5,6 +5,86 @@ function setChartType(type) {
     selectedChartType = type;
 }
 
+// Load fish dropdown upon page reload
+document.addEventListener('DOMContentLoaded', populateFishDropdown);
+
+async function populateFishDropdown() {
+    const select = document.getElementById('fishname');
+    select.innerHTML = ''; // clear dropdown
+
+    // Add "All Fish" option
+    const optionAll = document.createElement('option');
+    optionAll.value = '';
+    optionAll.textContent = 'All Fish';
+    select.appendChild(optionAll);
+
+    try {
+        const response = await fetch('/api/fishbuy/');
+        const data = await response.json();
+
+        // Collect unique fish names
+        const fishSet = new Set();
+        for (let i = 0; i < data.length; i++) {
+            const name = data[i].fishname;
+            if (name) fishSet.add(name);
+        }
+        const fishNames = Array.from(fishSet);
+
+        // Add each fish from DB to dropdown
+        for (let i = 0; i < fishNames.length; i++) {
+            const option = document.createElement('option');
+            option.value = fishNames[i];
+            option.textContent = fishNames[i];
+            select.appendChild(option);
+        }
+
+    } catch (error) {
+        console.error('Could not load fish:', error);
+    }
+}
+
+// Get selected fish from dropdown
+function getSelectedFish() {
+    const fishName = document.getElementById('fishname').value;
+    return { fishName };
+}
+
+async function filterChart() {
+    const start = document.getElementById('start-date').value;
+    const end = document.getElementById('end-date').value;
+    const fishName = getSelectedFish().fishName;
+
+    let url = '/api/fishbuy/';
+
+    const params = new URLSearchParams();
+    if (start) params.append('start', start);
+    if (end) params.append('end', end);
+
+    const query = params.toString() ? '?' + params.toString() : '';
+    url += query;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Filter by fish name if selected
+        let filtered = data;
+        if (fishName) {
+            filtered = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].fishname === fishName) {
+                    filtered.push(data[i]);
+                }
+            }
+        }
+
+        const grouped = groupByDate(filtered);
+        drawChart(grouped, fishName);
+    } catch (error) {
+        console.error('Error loading chart data:', error);
+    }
+}
+
 async function filterPredictionChart() {
     const startDate = document.getElementById('start-date').value;
     const endDate = document.getElementById('end-date').value;
@@ -19,14 +99,24 @@ async function filterPredictionChart() {
     const response = await fetch(url);
     const fishbuyData = await response.json();
 
-    const collected = collectByDate(fishbuyData);
+    const selectedFish = getSelectedFish().fishName;
+
+    let filteredData = fishbuyData;
+    if (selectedFish) {
+        filteredData = fishbuyData.filter(item => item.fishname === selectedFish);
+    }
+
+    const collected = collectByDate(filteredData);
+
+
+
     // Calculate baseline data based on first actual fish quantity (at start date)
     const baseline = calculateBaseline(collected);
     if (baseline.length === 0) {
         alert('No valid data to calculate baseline for the selected date range. Please try different dates.');
         return;
     }
-    drawPredictionChart(collected, baseline);
+    drawPredictionChart(collected, baseline, selectedFish);
 }
 
 function collectByDate(fishbuyData) {
@@ -65,7 +155,7 @@ function calculateBaseline(data) {
     return projections;
 }
 
-function drawPredictionChart(data, baselineData) {
+function drawPredictionChart(data, baselineData, fishName) {
     const labels = data.map(item => item.group);
     const fishBuyData = data.map(item => item.fishbuy || 0);
 
@@ -97,7 +187,7 @@ function drawPredictionChart(data, baselineData) {
     } else {
         tensionValue = 0;
     }
-    
+
     if (isHorizontalBar) {
         indexAxisValue = 'y';
     } else {
@@ -110,7 +200,7 @@ function drawPredictionChart(data, baselineData) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Actual Fish Quantity',
+                    label: 'Actual Fish Quantity' + (fishName || ' for All Fish'),
                     data: fishBuyData,
                     backgroundColor: 'rgba(89, 212, 142, 0.8)',
                     borderColor: 'rgba(89, 212, 142, 0.8)',
@@ -119,7 +209,7 @@ function drawPredictionChart(data, baselineData) {
                     showLine: !isScatter,
                 },
                 {
-                    label: 'Baseline Growth (Prediction)',
+                    label: 'Baseline Growth (Prediction)' + (fishName || ' for All Fish'),
                     data: baselineData,
                     borderColor: 'rgba(39, 191, 245, 0.8)',
                     backgroundColor: 'rgba(39, 191, 245, 0.8)',
