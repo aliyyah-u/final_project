@@ -92,8 +92,8 @@ function drawChart(data) {
                 {
                 label: 'Fish Quantity',
                 data: fishBuyData,
-                backgroundColor: 'rgba(167, 189, 167, 0.6)',
-                borderColor: 'rgba(167, 189, 167, 0.6)',
+                backgroundColor: 'rgba(89, 212, 142, 0.8)',
+                borderColor: 'rgba(89, 212, 142, 0.8)',
                 fill: isArea,
                 tension: tensionValue,
                 showLine: !isScatter,
