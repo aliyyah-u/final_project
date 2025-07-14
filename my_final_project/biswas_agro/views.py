@@ -16,12 +16,12 @@ def home(request):
     template = loader.get_template('home.html')
     return HttpResponse(template.render())
 
-def total_cost(request):
-    template = loader.get_template('total_cost.html')
+def totalCost(request):
+    template = loader.get_template('totalCost.html')
     return HttpResponse(template.render())
     
-def my_yield(request):
-    template = loader.get_template('yield.html')
+def fishYield(request):
+    template = loader.get_template('fishYield.html')
     return HttpResponse(template.render())
     
 def profit(request):
@@ -40,24 +40,16 @@ def loans(request):
     template = loader.get_template('loans.html')
     return HttpResponse(template.render())
 
-def sources(request):
-    template = loader.get_template('sources.html')
-    return HttpResponse(template.render())
-
-def sectors(request):
-    template = loader.get_template('sectors.html')
-    return HttpResponse(template.render())
-
-def fishname(request):
-    template = loader.get_template('fishname.html')
+def fishCost(request):
+    template = loader.get_template('fishCost.html')
     return HttpResponse(template.render())
 
 def logs(request):
     template = loader.get_template('logs.html')
     return HttpResponse(template.render())
 
-def businessAnalysis(request):
-    template = loader.get_template('businessAnalysis.html')
+def profitAnalysis(request):
+    template = loader.get_template('profitAnalysis.html')
     return HttpResponse(template.render())
 
 def prediction(request):

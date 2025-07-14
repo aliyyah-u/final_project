@@ -30,17 +30,15 @@ router.register(r'units', UnitsViewSet)
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('total_cost/', views.total_cost, name='total_cost'),
-    path('my_yield/', views.my_yield, name='my_yield'),
+    path('totalCost/', views.totalCost, name='totalCost'),
+    path('fishYield/', views.fishYield, name='fishYield'),
     path('profit/', views.profit, name='profit'),
     path('loans/', views.loans, name='loans'),
     path('investment/', views.investment, name='investment'),
     path('land/', views.land, name='land'),
-    path('sources/', views.sources, name='sources'),
-    path('fishname/', views.fishname, name='fishname'),
+    path('fishCost/', views.fishCost, name='fishCost'),
     path('logs/', views.logs, name='logs'),
-    path('sectors/', views.sectors, name='sectors'),
-    path('businessAnalysis/', views.businessAnalysis, name='businessAnalysis'),
+    path('profitAnalysis/', views.profitAnalysis, name='profitAnalysis'),
     path('prediction/', views.prediction, name='prediction'),
     path('api/', include(router.urls)), # /api/cost/ & /api/fishbuy/ & /api/earning etc.
     path('api-auth/', include('rest_framework.urls'))

@@ -1,11 +1,11 @@
 {% extends 'master.html' %}
 {% load static %}
 
-{% block title %}Earnings vs Costs (per Source){% endblock %}
+{% block title %}Fish Costs{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h2 class="mb-4">Earnings vs Costs (per Source)</h2>
+    <h2 class="mb-4">Fish Costs</h2>
     <div class="row g-3 mb-3">
         <div class="col-md-2">
             <label for="start-date" class="form-label">Start Date</label>
@@ -35,24 +35,8 @@
             </select>
         </div>
         <div class="col-md-2">
-            <label for="source" class="form-label">Source</label>
-            <select id="source" class="form-select">
-                <option value="">All Sources</option>
-                <option value="1">North</option>
-                <option value="2">East</option>
-                <option value="3">South</option>
-                <option value="4">West</option>          
-                <option value="5">Uzzal</option>          
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label for="sector" class="form-label">Sector</label>
-            <select id="sector" class="form-select">
-                <option value="">All Sectors</option>
-                <option value="0">Others</option>
-                <option value="1">Fish</option>
-                <option value="2">Vegetables</option>        
-            </select>
+            <label for="fishname" class="form-label">Select Fish</label>
+            <select id="fishname" class="form-select"></select>
         </div>
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="filterChart()" class="btn btn-primary w-100">Generate Chart</button>
@@ -67,5 +51,5 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'sectors.js' %}"></script>
+<script src="{% static 'fishCost.js' %}"></script>
 {% endblock %}

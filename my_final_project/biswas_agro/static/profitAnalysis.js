@@ -30,6 +30,9 @@ const sectorMap = {
     "2": "Vegetables"
 };
 
+// Load fish dropdown upon page reload
+document.addEventListener('DOMContentLoaded', populateFishDropdown);
+
 function getSelectedSource() {
     const selectedSource = document.getElementById('source').value;
     let sourceName = null;
@@ -64,12 +67,50 @@ function getSelectedSector() {
     };
 }
 
+// Get selected fish from dropdown
+function getSelectedFish() {
+    const fishName = document.getElementById('fishname').value;
+    return { fishName };
+}
+
+async function populateFishDropdown() {
+    const select = document.getElementById('fishname');
+    select.innerHTML = ''; // clear dropdown
+
+    // Add "All Fish" option
+    const optionAll = document.createElement('option');
+    optionAll.value = '';
+    optionAll.textContent = 'All Fish';
+    select.appendChild(optionAll);
+
+    try {
+        const response = await fetch('/api/fishbuy/');
+        const data = await response.json();
+
+        // Collect unique fish names
+        const fishSet = new Set();
+        for (let i = 0; i < data.length; i++) {
+            const name = data[i].fishname;
+            if (name) fishSet.add(name);
+        }
+        const fishNames = Array.from(fishSet);
+
+        // Add each fish from DB to dropdown
+        for (let i = 0; i < fishNames.length; i++) {
+            const option = document.createElement('option');
+            option.value = fishNames[i];
+            option.textContent = fishNames[i];
+            select.appendChild(option);
+        }
+
+    } catch (error) {
+        console.error('Could not load fish:', error);
+    }
+}
+
 async function filterChart() {
     const startDate = document.getElementById('start-date').value;
     const endDate = document.getElementById('end-date').value;
-
-    const sectorValue = document.getElementById('sector').value;
-
 
     const sourceInfo = getSelectedSource();
     const sourceName = sourceInfo.sourceName;
@@ -80,6 +121,8 @@ async function filterChart() {
     const sectorName = sectorInfo.sectorName;
     const sectorId = sectorInfo.sectorId;
     const selectedSector = sectorInfo.selectedSector;
+
+    const { fishName } = getSelectedFish();
 
     let costUrl = '/api/cost/';
     let fishbuyUrl = '/api/fishbuy/';
@@ -111,12 +154,13 @@ async function filterChart() {
         earningRes.json()
     ]);
 
-    // Filter fishbuy data by source
     let filteredFishbuyData = fishbuyData;
+
     if (selectedSource) {
-        filteredFishbuyData = fishbuyData.filter(function (item) {
-            return item.fishto === sourceName;
-        });
+        filteredFishbuyData = filteredFishbuyData.filter(item => item.fishto === sourceName);
+    }
+    if (fishName) {
+        filteredFishbuyData = filteredFishbuyData.filter(item => item.fishname === fishName);
     }
 
     // Filter earning data by source
@@ -127,9 +171,9 @@ async function filterChart() {
         });
     }
 
-if (selectedSector) {
-    filteredEarningData = filteredEarningData.filter(item => item.sector === sectorId);
-}
+    if (selectedSector) {
+        filteredEarningData = filteredEarningData.filter(item => item.sector === sectorId);
+    }
 
     let filteredCostData = costData;
 
@@ -140,16 +184,16 @@ if (selectedSector) {
         });
     }
 
-    // const collected = collectByDate(costData, filteredFishbuyData, salaryData, filteredEarningData)
-    const collected = collectByDate(filteredCostData, filteredFishbuyData, salaryData, filteredEarningData);
-    drawChart(collected, sourceName, sectorName);
+    const collected = groupByDate(filteredCostData, filteredFishbuyData, salaryData, filteredEarningData);
+    drawChart(collected, sourceName, sectorName, fishName);
 }
 
-function collectByDate(costData, fishbuyData, salaryData, earningData) {
+function groupByDate(costData, fishbuyData, salaryData, earningData) {
     const map = {};
     const groupBy = document.getElementById('grouping').value;
 
     function getGroup(date) {
+        if (!date) return "No Date";
         if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
         if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
         return date;                                         // Full date (default)
@@ -187,7 +231,7 @@ function collectByDate(costData, fishbuyData, salaryData, earningData) {
     return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
-function drawChart(data, sourceName, sectorName) {
+function drawChart(data, sourceName, sectorName, fishName) {
     const labels = data.map(item => item.group);
     const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));
     const earningsData = data.map(item => item.earnings || 0);
@@ -232,7 +276,7 @@ function drawChart(data, sourceName, sectorName) {
             labels,
             datasets: [
                 {
-                    label: 'Total Cost ৳ ('+ 'Source: ' + sourceName + ', ' + ' Sector: ' + sectorName + ')'
+                    label: 'Total Cost ৳ (' + 'Source: ' + (sourceName || ' All Sources') + ', Sector: ' + (sectorName || ' All Sectors') + ', Fish Name: ' + (fishName || ' All Fish') + ')'
                     ,
                     data: totalCostData,
                     backgroundColor: 'rgba(220, 53, 69, 0.6)',
@@ -242,7 +286,7 @@ function drawChart(data, sourceName, sectorName) {
                     showLine: !isScatter,
                 },
                 {
-                    label: 'Earnings ৳ (' + 'Source: '+ sourceName + ', ' + ' Sector: ' + sectorName + ')',
+                    label: 'Earnings ৳ (' + 'Source: ' + (sourceName || ' All Sources') + ', Sector: ' + (sectorName || ' All Sectors') + ')',
                     data: earningsData,
                     backgroundColor: 'rgba(89, 212, 142, 0.8)',
                     borderColor: 'rgba(89, 212, 142, 0.8)',
@@ -321,5 +365,5 @@ function downloadChartAsPDF() {
     const y = 10;
 
     pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
-    pdf.save('sources_chart.pdf');
+    pdf.save('profit_Analysis_chart.pdf');
 }

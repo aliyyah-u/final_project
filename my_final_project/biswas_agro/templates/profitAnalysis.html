@@ -1,11 +1,11 @@
 {% extends 'master.html' %}
 {% load static %}
 
-{% block title %}Fish Quantities{% endblock %}
+{% block title %}Profit Analysis{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h2>Fish Quantities</h2>
+    <h2 class="mb-4">Profit Analysis</h2>
     <div class="row g-3 mb-3">
         <div class="col-md-2">
             <label for="start-date" class="form-label">Start Date</label>
@@ -34,8 +34,31 @@
                 <option value="scatter">Scatter Plot</option>
             </select>
         </div>
+        <div class="col-md-2">
+            <label for="source" class="form-label">Source</label>
+            <select id="source" class="form-select">
+                <option value="">All Sources</option>
+                <option value="1">North</option>
+                <option value="2">East</option>
+                <option value="3">South</option>
+                <option value="4">West</option>          
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="sector" class="form-label">Sector</label>
+            <select id="sector" class="form-select">
+                <option value="">All Sectors</option>
+                <option value="0">Others</option>
+                <option value="1">Fish</option>
+                <option value="2">Vegetables</option>        
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="fishname" class="form-label">Select Fish</label>
+            <select id="fishname" class="form-select"></select>
+        </div>
         <div class="col-md-2 d-flex align-items-end">
-            <button onclick="filterYieldChart()" class="btn btn-primary w-100">Generate Chart</button>
+            <button onclick="filterChart()" class="btn btn-primary w-100">Generate Chart</button>
         </div>
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="downloadChartAsPDF()" class="btn btn-primary w-100">Download Chart as PDF</button>
@@ -43,9 +66,9 @@
     </div>
 </div>
 
-<canvas id="fishChart"></canvas>
+<canvas id="myChart"></canvas>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'my_yield.js' %}"></script>
+<script src="{% static 'profitAnalysis.js' %}"></script>
 {% endblock %}
