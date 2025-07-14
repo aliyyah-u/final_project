@@ -48,6 +48,7 @@ function collectByDate(costData, fishbuyData, salaryData, earningData) {
     const groupBy = document.getElementById('grouping').value;
 
     function getGroup(date) {
+        if (!date) return "No Date";
         if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
         if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
         return date;                                         // Full date (default)

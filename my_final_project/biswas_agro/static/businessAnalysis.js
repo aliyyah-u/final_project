@@ -30,6 +30,9 @@ const sectorMap = {
     "2": "Vegetables"
 };
 
+// Load fish dropdown upon page reload
+document.addEventListener('DOMContentLoaded', populateFishDropdown);
+
 function getSelectedSource() {
     const selectedSource = document.getElementById('source').value;
     let sourceName = null;
@@ -64,41 +67,50 @@ function getSelectedSector() {
     };
 }
 
+// Get selected fish from dropdown
 function getSelectedFish() {
-    const selectedFishId = document.getElementById('fishname').value;
+    const fishName = document.getElementById('fishname').value;
+    return { fishName };
+}
 
-    const fishMap = {
-        "1": null, // All Fish
-        "2": "রুই",
-        "3": "কাতলা",
-        "4": "মৃগেল",
-        "5": "গ্রাস কার্প",
-        "6": "পুটি",
-        "7": "তেলাপিয়া",
-        "8": "চিংড়ি",
-        "9": "সিলভার কার্প",
-        "10": "ধানী",
-        "11": "জাপানি",
-        "12": "মাছের ডিম",
-        "13": "ব্লাড কার্প",
-        "14": "ব্রিগেড",
-        "16": "শোল"
-    };
+async function populateFishDropdown() {
+    const select = document.getElementById('fishname');
+    select.innerHTML = ''; // clear dropdown
 
-    const fishName = fishMap[selectedFishId];
+    // Add "All Fish" option
+    const optionAll = document.createElement('option');
+    optionAll.value = '';
+    optionAll.textContent = 'All Fish';
+    select.appendChild(optionAll);
 
-    return {
-        selectedFishId,
-        fishName
-    };
+    try {
+        const response = await fetch('/api/fishbuy/');
+        const data = await response.json();
+
+        // Collect unique fish names
+        const fishSet = new Set();
+        for (let i = 0; i < data.length; i++) {
+            const name = data[i].fishname;
+            if (name) fishSet.add(name);
+        }
+        const fishNames = Array.from(fishSet);
+
+        // Add each fish from DB to dropdown
+        for (let i = 0; i < fishNames.length; i++) {
+            const option = document.createElement('option');
+            option.value = fishNames[i];
+            option.textContent = fishNames[i];
+            select.appendChild(option);
+        }
+
+    } catch (error) {
+        console.error('Could not load fish:', error);
+    }
 }
 
 async function filterChart() {
     const startDate = document.getElementById('start-date').value;
     const endDate = document.getElementById('end-date').value;
-
-    const sectorValue = document.getElementById('sector').value;
-
 
     const sourceInfo = getSelectedSource();
     const sourceName = sourceInfo.sourceName;
@@ -151,7 +163,6 @@ async function filterChart() {
         filteredFishbuyData = filteredFishbuyData.filter(item => item.fishname === fishName);
     }
 
-
     // Filter earning data by source
     let filteredEarningData = earningData;
     if (selectedSource) {
@@ -173,15 +184,16 @@ async function filterChart() {
         });
     }
 
-    const collected = collectByDate(filteredCostData, filteredFishbuyData, salaryData, filteredEarningData);
+    const collected = groupByDate(filteredCostData, filteredFishbuyData, salaryData, filteredEarningData);
     drawChart(collected, sourceName, sectorName, fishName);
 }
 
-function collectByDate(costData, fishbuyData, salaryData, earningData) {
+function groupByDate(costData, fishbuyData, salaryData, earningData) {
     const map = {};
     const groupBy = document.getElementById('grouping').value;
 
     function getGroup(date) {
+        if (!date) return "No Date";
         if (groupBy === 'month') return date.slice(0, 7);    // "YYYY-MM"
         if (groupBy === 'year') return date.slice(0, 4);     // "YYYY"
         return date;                                         // Full date (default)
@@ -264,7 +276,7 @@ function drawChart(data, sourceName, sectorName, fishName) {
             labels,
             datasets: [
                 {
-                    label: 'Total Cost ৳ (' + 'Source: ' + sourceName + ', ' + ' Sector: ' + sectorName + 'Fish Name: ' + fishName + ')'
+                    label: 'Total Cost ৳ (' + 'Source: ' + (sourceName || ' All Sources') + ', Sector: ' + (sectorName || ' All Sectors') + ', Fish Name: ' + (fishName || ' All Fish') + ')'
                     ,
                     data: totalCostData,
                     backgroundColor: 'rgba(220, 53, 69, 0.6)',
@@ -274,7 +286,7 @@ function drawChart(data, sourceName, sectorName, fishName) {
                     showLine: !isScatter,
                 },
                 {
-                    label: 'Earnings ৳ (' + 'Source: ' + sourceName + ', ' + ' Sector: ' + sectorName + 'Fish Name: ' + fishName + ')',
+                    label: 'Earnings ৳ (' + 'Source: ' + (sourceName || ' All Sources') + ', Sector: ' + (sectorName || ' All Sectors') + ')',
                     data: earningsData,
                     backgroundColor: 'rgba(89, 212, 142, 0.8)',
                     borderColor: 'rgba(89, 212, 142, 0.8)',

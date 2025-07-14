@@ -108,8 +108,6 @@ async function filterPredictionChart() {
 
     const collected = collectByDate(filteredData);
 
-
-
     // Calculate baseline data based on first actual fish quantity (at start date)
     const baseline = calculateBaseline(collected);
     if (baseline.length === 0) {
