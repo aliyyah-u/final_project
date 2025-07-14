@@ -8,6 +8,7 @@ function setChartType(type) {
 // Load fish dropdown upon page reload
 document.addEventListener('DOMContentLoaded', populateFishDropdown);
 
+
 async function populateFishDropdown() {
     const select = document.getElementById('fishname');
     select.innerHTML = ''; // clear dropdown
@@ -198,5 +199,5 @@ function downloadChartAsPDF() {
     const height = (imgProps.height * width) / imgProps.width;
 
     pdf.addImage(img, 'PNG', 10, 10, width, height);
-    pdf.save('fish_chart.pdf');
+    pdf.save('fish__cost_chart.pdf');
 }

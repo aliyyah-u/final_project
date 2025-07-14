@@ -17,11 +17,16 @@ async function filterLoanChart() {
     if (endDate) params.append('end', endDate);
     if (params.toString()) url += `?${params.toString()}`;
 
-    const response = await fetch(url);
-    const loanData = await response.json();
+    try {
+        const response = await fetch(url);
+        const loanData = await response.json();
 
-    const collected = collectByDate(loanData);
-    drawLoanChart(collected);
+        const collected = collectByDate(loanData);
+        drawLoanChart(collected);
+    }
+    catch (error) {
+        console.error('Error loading chart data:', error);
+    }
 }
 
 function collectByDate(loanData) {

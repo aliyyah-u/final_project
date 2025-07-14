@@ -1,3 +1,4 @@
+// Initialise chart and default chart type
 let myChart = null;
 let selectedChartType = 'bar';
 

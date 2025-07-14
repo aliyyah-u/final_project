@@ -1,4 +1,5 @@
 {% extends 'master.html' %}
+<!-- Load Static files -->
 {% load static %}
 
 {% block title %}Fish Growth Prediction vs Outcome{% endblock %}
@@ -7,6 +8,7 @@
 <div class="container">
     <h2 class="mb-4">Fish Growth Prediction vs Outcome</h2>
     <div class="row g-3 mb-3">
+        <!-- Date-range picker -->
         <div class="col-md-2">
             <label for="start-date" class="form-label">Start Date</label>
             <input type="date" id="start-date" class="form-control">
@@ -15,6 +17,7 @@
             <label for="end-date" class="form-label">End Date</label>
             <input type="date" id="end-date" class="form-control">
         </div>
+        <!-- Dropdown to choose date format -->
         <div class="col-md-2">
             <label for="grouping" class="form-label">Group By</label>
             <select id="grouping" class="form-select">
@@ -23,6 +26,7 @@
                 <option value="year">Year</option>
             </select>
         </div>
+        <!-- Dropdown to select chart type -->
         <div class="col-md-2">
             <label for="chart-type" class="form-label">Chart Type</label>
             <select id="chart-type" class="form-select" onchange="setChartType(this.value)">
@@ -34,22 +38,28 @@
                 <option value="scatter">Scatter Plot</option>
             </select>
         </div>
+        <!-- Dropdown for fish filter by fish name -->
         <div class="col-md-2">
             <label for="fishname" class="form-label">Select Fish</label>
             <select id="fishname" class="form-select"></select>
         </div>
+        <!-- Button to trigger chart generation based on selected filters -->
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="filterPredictionChart()" class="btn btn-primary w-100">Generate Chart</button>
         </div>
+        <!-- Button to download chart as PDF -->
         <div class="col-md-2 d-flex align-items-end">
             <button onclick="downloadChartAsPDF()" class="btn btn-primary w-100">Download Chart as PDF</button>
         </div>
     </div>
 </div>
 
+<!-- Render chart on canvas element-->
 <canvas id="fishChart"></canvas>
 
+<!-- Load PDF export functionality -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'prediction.js' %}"></script>
 {% endblock %}

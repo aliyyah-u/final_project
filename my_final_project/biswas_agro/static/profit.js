@@ -25,22 +25,28 @@ async function filterProfitChart() {
     salaryUrl += query;
     earningUrl += query;
 
-    const [costRes, fishbuyRes, salaryRes, earningRes] = await Promise.all([
-        fetch(costUrl),
-        fetch(fishbuyUrl),
-        fetch(salaryUrl),
-        fetch(earningUrl)
-    ]);
 
-    const [costData, fishbuyData, salaryData, earningData] = await Promise.all([
-        costRes.json(),
-        fishbuyRes.json(),
-        salaryRes.json(),
-        earningRes.json()
-    ]);
+    try {
+        const [costRes, fishbuyRes, salaryRes, earningRes] = await Promise.all([
+            fetch(costUrl),
+            fetch(fishbuyUrl),
+            fetch(salaryUrl),
+            fetch(earningUrl)
+        ]);
 
-    const collected = collectByDate(costData, fishbuyData, salaryData, earningData)
-    drawProfitChart(collected);
+        const [costData, fishbuyData, salaryData, earningData] = await Promise.all([
+            costRes.json(),
+            fishbuyRes.json(),
+            salaryRes.json(),
+            earningRes.json()
+        ]);
+
+        const collected = collectByDate(costData, fishbuyData, salaryData, earningData)
+        drawProfitChart(collected);
+
+    } catch (error) {
+        console.error('Error fetching profit data:', error);
+    }
 }
 
 function collectByDate(costData, fishbuyData, salaryData, earningData) {

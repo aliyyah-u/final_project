@@ -1,16 +1,17 @@
 {% extends 'master.html' %}
 {% block body %}
 
+<!-- Homepage titles -->
 <h1>Welcome to Biswas Agro</h1>
 <h4>Data Visualisation Site</h4>
-
+<!-- Button to return to admin panel -->
 <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'admin:index' %}'">
     Return to Admin
 </button>
 
 <div class="container mt-5">
     <div class="row">
-        <!-- London -->
+        <!-- Time, date and weather widgets for London -->
         <div class="col-md-6">
             <div class="datetime p-3 rounded shadow mt-3 mb-4 london">
                 <div class="h5 text-white mb-2">London</div>
@@ -21,7 +22,7 @@
                 data-label_2="WEATHER" data-theme="weather_one">LONDON WEATHER</a>
         </div>
 
-        <!-- Bangladesh -->
+        <!-- Time, date and weather widgets for Bangladesh -->
         <div class="col-md-6">
             <div class="datetime p-3 rounded shadow mt-3 mb-4 bangladesh">
                 <div class="h5 text-white mb-2">Bangladesh</div>
@@ -33,6 +34,7 @@
         </div>
     </div>
 
+    <!-- Update date,time for both locations -->
     <script>
         function updateClock(selector, timeZone) {
             const timeEl = document.querySelector(selector + ' .time');
@@ -47,6 +49,7 @@
                 dateEl.textContent = new Intl.DateTimeFormat('en-GB', optionsDate).format(now);
             }
 
+            // Update every second
             setInterval(format, 1000);
             format();
         }
@@ -55,16 +58,17 @@
         updateClock('.bangladesh', 'Asia/Dhaka');
     </script>
 
+    <!-- Load external weather widget -->
     <div class="col-md-6">
         <script>
-            !function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (!d.getElementById(id)) {
-                    js = d.createElement(s); js.id = id;
-                    js.src = 'https://weatherwidget.io/js/widget.min.js';
-                    fjs.parentNode.insertBefore(js, fjs);
+            !function (d, s, id) { // document, script, id
+                var js, fjs = d.getElementsByTagName(s)[0]; // Get first script tag
+                if (!d.getElementById(id)) {  // If script not already on page
+                    js = d.createElement(s); js.id = id; // Create script tag and set ID
+                    js.src = 'https://weatherwidget.io/js/widget.min.js'; // Set widget source
+                    fjs.parentNode.insertBefore(js, fjs); // Add to page
                 }
-            }(document, 'script', 'weatherwidget-io-js');
+            }(document, 'script', 'weatherwidget-io-js'); // Run immediately
         </script>
 
     </div>

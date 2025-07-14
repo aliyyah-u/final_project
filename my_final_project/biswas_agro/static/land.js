@@ -15,14 +15,19 @@ function setYAxisType(yType) {
     selectedYAxisType = yType;
 }
 
+// Fetch and filter chart data
 async function filterChart() {
     let url = '/api/land/';
     const params = new URLSearchParams();
     if (params.toString()) url += `?${params.toString()}`;
-    const response = await fetch(url);
-    const data = await response.json();
-
-    drawChart(data);
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        drawChart(data);
+    } catch (error) {
+        console.error('Failed to fetch chart data:', error);
+    }
 }
 
 function drawChart(data) {

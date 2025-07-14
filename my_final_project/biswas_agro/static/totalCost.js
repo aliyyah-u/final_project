@@ -1,20 +1,25 @@
+// Initialise chart and default chart type
 let myChart = null;
 let selectedChartType = 'bar';
 
+// Set the selected chart type
 function setChartType(type) {
     selectedChartType = type;
 }
 
+// Main function to fetch data and render chart
 async function filterCostChart() {
+    // Get selected date range values
     const startDate = document.getElementById('start-date').value;
     const endDate = document.getElementById('end-date').value;
 
+    // API URLs
     let costUrl = '/api/cost/';
     let fishbuyUrl = '/api/fishbuy/';
     let salaryUrl = '/api/salary/';
     const params = new URLSearchParams();
 
-    // Add the selected date range as parameters
+    // Append query parameters for filtering by date
     if (startDate) params.append('start', startDate);
     if (endDate) params.append('end', endDate);
     const query = params.toString() ? `?${params.toString()}` : '';
@@ -22,25 +27,34 @@ async function filterCostChart() {
     fishbuyUrl += query;
     salaryUrl += query;
 
-    const [costRes, fishbuyRes, salaryRes] = await Promise.all([
-        fetch(costUrl),
-        fetch(fishbuyUrl),
-        fetch(salaryUrl)
-    ]);
+    let costData = [], fishbuyData = [], salaryData = [];
 
-    const [costData, fishbuyData, salaryData] = await Promise.all([
-        costRes.json(),
-        fishbuyRes.json(),
-        salaryRes.json()
-    ]);
+    try {
+        // Fetch data
+        const [costRes, fishbuyRes, salaryRes] = await Promise.all([
+            fetch(costUrl),
+            fetch(fishbuyUrl),
+            fetch(salaryUrl)
+        ]);
 
-    // collect and sort cost data by date, oldest first
-    const collected = collectByDate(costData, fishbuyData, salaryData);
-    drawChart(collected);
+        // Convert responses to JSON
+        [costData, fishbuyData, salaryData] = await Promise.all([
+            costRes.json(),
+            fishbuyRes.json(),
+            salaryRes.json()
+        ]);
 
+        // Aggregate and format data for charting
+        const aggregatedData = aggregateByDate(costData, fishbuyData, salaryData);
+        drawChart(aggregatedData);
+    } 
+    catch (error) {
+        console.error('Please try again - failed to load chart data:', error);
+    }
 }
 
-function collectByDate(costData, fishbuyData, salaryData) {
+// Groups and sums data by selected date format (day, month, or year)
+function aggregateByDate(costData, fishbuyData, salaryData) {
     const map = {};
     const groupBy = document.getElementById('grouping').value;
 
@@ -65,6 +79,7 @@ function collectByDate(costData, fishbuyData, salaryData) {
         map[group].fishbuy += parseFloat(item.price || 0);
     });
 
+    // Sum salaries
     salaryData.forEach(item => {
         const group = getGroup(item.date);
         map[group] = map[group] || { group, cost: 0, fishbuy: 0, salary: 0 };
@@ -75,6 +90,7 @@ function collectByDate(costData, fishbuyData, salaryData) {
     return Object.values(map).sort((a, b) => new Date(a.group) - new Date(b.group));
 }
 
+// Render chart given selected data
 function drawChart(data) {
     const labels = data.map(item => item.group);
     const totalCostData = data.map(item => (item.cost || 0) + (item.fishbuy || 0) + (item.salary || 0));

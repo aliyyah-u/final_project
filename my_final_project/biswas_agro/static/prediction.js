@@ -247,5 +247,5 @@ function downloadChartAsPDF() {
     const y = 10;
 
     pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
-    pdf.save('fish_prediction_chart.pdf');
+    pdf.save('fish_growth_prediction_chart.pdf');
 }

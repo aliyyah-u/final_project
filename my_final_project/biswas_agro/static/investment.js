@@ -17,11 +17,17 @@ async function filterChart() {
     if (endDate) params.append('end', endDate);
     if (params.toString()) url += `?${params.toString()}`;
 
-    const response = await fetch(url);
+    try {
+            const response = await fetch(url);
     const investmentData = await response.json();
 
     const collected = collectByDate(investmentData);
     drawChart(collected);
+        
+    } catch (error) {
+        console.error('Error loading chart data:', error);
+    }
+
 }
 
 function collectByDate(investmentData) {
