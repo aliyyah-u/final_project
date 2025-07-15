@@ -27,10 +27,10 @@ Local Installation Instructions (if required):
 This app was built and tested using a local Python virtual environment (final_project_venv) and uses a MariaDB/MySQL backend. Setting this up locally may require extra configuration.
 
 1. Clone repo to local machine
-2. Create and activate virtual env
-3. Install required packages using requirements.txt
-4. Apply migrations to setup database
-5. Setup XAMPP and make sure to swap mariaDB file with most recent version. Then run the apache and mysql servers
+2. Open project in vs code
+3. Install required packages using requirements.txt. Apply migrations to setup database and script packages. Create and activate virtual env if needed.
+4. Setup XAMPP, import provided db into it. As django is on latest version make sure to swap mariaDB file in xampp with most recent version. Then run the apache and mysql servers as admin
+5. Runserver python project server in cmd prompt after navigating to project directory
 6. Access the app in your browser at http://127.0.0.1:8000/admin/
 
 If local setup fails, please use the hosted version and dummy logins to test features. This is challenging since the latest version of Django does not work on XAMPP without fixing the mariaDB inside the program file. A simple stack overflow search has the (extensive) solution.
