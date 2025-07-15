@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-!2td!id78b#i!_t9_kqc9x7--l%-tv)5@q_u&-0pgzxq9)x67(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aliyyah.eu.pythonanywhere.com']
 
 
 # Application definition
@@ -194,16 +196,29 @@ WSGI_APPLICATION = 'my_final_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mysql_db',
-        "USER": 'root',
-        "PASSWORD": '',
-        "HOST": '127.0.0.1',
-        "PORT": '3306',
+if os.environ.get('PYTHONANYWHERE'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'Aliyyah$project-db',
+            'USER': 'Aliyyah',
+            'PASSWORD': 'DemoPassword',
+            'HOST': 'Aliyyah.mysql.eu.pythonanywhere-services.com',
+            'PORT': '3306',
+        }
     }
-}
+else:
+    # Local db
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'mysql_db',
+            "USER": 'root',
+            "PASSWORD": '',
+            "HOST": '127.0.0.1',
+            "PORT": '3306',
+        }
+    }
 
 
 # Password validation
