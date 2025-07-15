@@ -20,7 +20,7 @@ async function filterChart() {
     let url = '/api/land/';
     const params = new URLSearchParams();
     if (params.toString()) url += `?${params.toString()}`;
-    
+
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -68,14 +68,14 @@ function drawChart(data) {
     }
 
     myChart = new Chart(ctx, {
-        type:chartType,
+        type: chartType,
         data: {
             labels,
             datasets: [{
                 label: selectedXAxisType + " vs " + selectedYAxisType,
                 data: myData,
                 backgroundColor: 'rgba(89, 212, 142, 0.8)',
-                borderColor: 'rgba(89, 212, 142, 0.8)', 
+                borderColor: 'rgba(89, 212, 142, 0.8)',
                 fill: isArea,
                 tension: tensionValue
             }]
@@ -92,7 +92,7 @@ function drawChart(data) {
     });
 }
 
-function downloadChartAsPDF() { 
+function downloadChartAsPDF() {
     const canvas = document.getElementById('myChart');
     const imgData = canvas.toDataURL('image/png');
 

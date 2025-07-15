@@ -175,16 +175,16 @@ function drawChart(data, fishName) {
 
                             const fishCost = item.fishbuy || 0;
                             return 'Fish Cost: ' + fishCost;
-                            }
                         }
                     }
                 }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
             }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
     });
 }
 

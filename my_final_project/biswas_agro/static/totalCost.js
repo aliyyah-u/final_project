@@ -47,7 +47,7 @@ async function filterCostChart() {
         // Aggregate and format data for charting
         const aggregatedData = aggregateByDate(costData, fishbuyData, salaryData);
         drawChart(aggregatedData);
-    } 
+    }
     catch (error) {
         console.error('Please try again - failed to load chart data:', error);
     }

@@ -18,12 +18,12 @@ async function filterChart() {
     if (params.toString()) url += `?${params.toString()}`;
 
     try {
-            const response = await fetch(url);
-    const investmentData = await response.json();
+        const response = await fetch(url);
+        const investmentData = await response.json();
 
-    const collected = collectByDate(investmentData);
-    drawChart(collected);
-        
+        const collected = collectByDate(investmentData);
+        drawChart(collected);
+
     } catch (error) {
         console.error('Error loading chart data:', error);
     }
@@ -115,7 +115,7 @@ function drawChart(data) {
     });
 }
 
-function downloadChartAsPDF() { 
+function downloadChartAsPDF() {
     const canvas = document.getElementById('myChart');
     const imgData = canvas.toDataURL('image/png');
 
