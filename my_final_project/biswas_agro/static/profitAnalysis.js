@@ -185,6 +185,21 @@ async function filterChart() {
         });
     }
 
+        if (
+            (!costData || costData.length === 0) &&
+            (!fishbuyData || fishbuyData.length === 0) &&
+            (!salaryData || salaryData.length === 0)
+        ) {
+            console.error('No data available for the selected date range.');
+            alert('No data available for the selected date range.');
+
+            if (myChart) {
+                myChart.destroy(); // Remove old chart
+                myChart = null;
+            }
+            return;
+        }
+
     const collected = groupByDate(filteredCostData, filteredFishbuyData, salaryData, filteredEarningData);
     drawChart(collected, sourceName, sectorName, fishName);
 }

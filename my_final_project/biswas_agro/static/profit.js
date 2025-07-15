@@ -41,6 +41,22 @@ async function filterProfitChart() {
             earningRes.json()
         ]);
 
+        if (
+            (!costData || costData.length === 0) &&
+            (!fishbuyData || fishbuyData.length === 0) &&
+            (!earningData || earningData.length === 0) &&
+            (!salaryData || salaryData.length === 0)
+        ) {
+            console.error('No data available for the selected date range.');
+            alert('No data available for the selected date range.');
+
+            if (profitChart) {
+                profitChart.destroy(); // Remove old chart
+                profitChart = null;
+            }
+            return;
+        }
+
         const collected = collectByDate(costData, fishbuyData, salaryData, earningData)
         drawProfitChart(collected);
 

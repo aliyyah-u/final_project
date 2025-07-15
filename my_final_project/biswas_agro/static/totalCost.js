@@ -44,6 +44,21 @@ async function filterCostChart() {
             salaryRes.json()
         ]);
 
+        if (
+            (!costData || costData.length === 0) &&
+            (!fishbuyData || fishbuyData.length === 0) &&
+            (!salaryData || salaryData.length === 0)
+        ) {
+            console.error('No data available for the selected date range.');
+            alert('No data available for the selected date range.');
+
+            if (myChart) {
+                myChart.destroy(); // Remove old chart
+                myChart = null;
+            }
+            return;
+        }
+
         // Aggregate and format data for charting
         const aggregatedData = aggregateByDate(costData, fishbuyData, salaryData);
         drawChart(aggregatedData);
